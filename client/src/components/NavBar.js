@@ -1,15 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 const NavBar = () => {
     return (
         <nav>
             <div className="nav-wrapper white">
-                <Link to="/" className="brand-logo left">Instagram</Link>
+                <a href="/" className="brand-logo left">Instagram</a>
                 <ul id="nav-mobile" className="right hide-on-med-and-down">
-                    <li><Link to="/signin">Sing in</Link></li>
-                    <li><Link to="/signup">Sing up</Link></li>
-                    <li><Link to="/profile">Profile</Link></li>
+                    <li><a href="/signin">Sing in</a></li>
+                    <li><a href="/signup">Sing up</a></li>
+                    <li><a href="/profile">Profile</a></li>
                 </ul>
             </div>
         </nav>
