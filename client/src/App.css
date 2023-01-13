@@ -23,3 +23,13 @@ a {
     border-bottom: 1px solid rgb(44, 83, 255) !important;
     box-shadow: 0 1px 0 0 rgb(44, 83, 255) !important;
   }
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.item {
+    width: 30%
+}
