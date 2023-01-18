@@ -17,14 +17,15 @@ router.get('/allpost', (req, res) => {
 })
 
 router.post('/createpost', requireLogin, (req, res) => {
-    const {title, body} = req.body
-    if(!title || !body) {
+    const {title, body, photoURI} = req.body
+    if(!title || !body || !photoURI) {
         return res.status(422).json({error: "plase add all the fiedls"})
     }
     req.user.password = undefined
     const post = new Post ({
         title,
         body,
+        photo: photoURI,
         postedBy: req.user
     })
     post.save().then(result => {
