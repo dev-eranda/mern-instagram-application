@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import M from 'materialize-css'
 
 const CreatePost = () => {
 
-    const history = useHistory()
+    // const history = useHistory()
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [image, setImage] = useState("")
@@ -12,7 +12,6 @@ const CreatePost = () => {
 
     useEffect(() => {
         if (url) {
-            //createpost
             fetch("/createpost", {
                 method: "post",
                 headers: {
