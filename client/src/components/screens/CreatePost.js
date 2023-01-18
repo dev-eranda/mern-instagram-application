@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import M from 'materialize-css'
 
-
-
 const CreatePost = () => {
 
     const history = useHistory()
