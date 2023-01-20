@@ -1,23 +1,53 @@
-import React from 'react'
+import React, { useEffect, createContext, useReducer, useContext } from 'react'
 import NavBar from './components/NavBar'
 import "./App.css"
-import { BrowserRouter, Route, } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom'
 import Home from './components/screens/Home'
 import Signin from './components/screens/Signin'
 import Signup from './components/screens/Signup'
 import Profile from './components/screens/Profile'
 import CreatePost from './components/screens/CreatePost'
+import { reducer, initialState } from './reducers/userReducer'
 
-function App() {
+export const UserContext = createContext()
+
+const Routing = () => {
+
+  const history = useHistory()
+  const { state, dispatch } = useContext(UserContext)
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"))
+    dispatch({ type: "USER", payload: user }) /* user close browser without logged out and again open browser set state */
+    // if (user) {
+    //   history.push('/')
+    // }
+    // else {
+    //   history.push('/signin')
+    // }
+  }, [])
+
   return (
-    <BrowserRouter>
-      <NavBar />
+    <Switch>
       <Route exact path="/"><Home /></Route>
       <Route path="/signin"><Signin /></Route>
       <Route path="/signup"><Signup /></Route>
       <Route path="/profile"><Profile /></Route>
       <Route path="/createpost"><CreatePost /></Route>
-    </BrowserRouter>
+    </Switch>
+  )
+}
+
+function App() {
+
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return (
+    <UserContext.Provider value={{ state, dispatch }}> {/* Access state and dispatch in all the routes */}
+      <BrowserRouter>
+        <NavBar />
+        <Routing />  {/* Access the history */}
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 

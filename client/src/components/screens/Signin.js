@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import M from 'materialize-css'
+import { UserContext } from '../../App'
 
 const Signin = () => {
 
     const history = useHistory()
+    const { state, dispatch } = useContext(UserContext)
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
 
@@ -24,20 +26,21 @@ const Signin = () => {
                 password
             })
         }).then(res => res.json())
-        .then(data => {
-            console.log(data)
-            if (data.error) {
-                M.toast({ html: data.error, classes: "#c62828 red darken-3" })
-            }
-            else {
-                localStorage.setItem("jwt", data.token)
-                localStorage.setItem("user", JSON.stringify(data.user))
-                M.toast({ html: "Success", classes: "#43a047 green darken-1" })
-                history.push('/')
-            }
-        }).catch(error => {
-            console.log(error)
-        })
+            .then(data => {
+                console.log(data)
+                if (data.error) {
+                    M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                }
+                else {
+                    localStorage.setItem("jwt", data.token)
+                    localStorage.setItem("user", JSON.stringify(data.user))
+                    dispatch({ type: "USER", payload: data.user })
+                    M.toast({ html: "Success", classes: "#43a047 green darken-1" })
+                    history.push('/')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
     }
 
     return (
