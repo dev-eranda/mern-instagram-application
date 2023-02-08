@@ -12,19 +12,19 @@ import { reducer, initialState } from './reducers/userReducer'
 export const UserContext = createContext()
 
 const Routing = () => {
-
   const history = useHistory()
   const { state, dispatch } = useContext(UserContext)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"))
     dispatch({ type: "USER", payload: user }) /* user close browser without logged out and again open browser set state */
-    // if (user) {
-    //   history.push('/')
-    // }
-    // else {
-    //   history.push('/signin')
-    // }
+
+    if (user) {
+      history.push('/')
+    }
+    else {
+      history.push('/signin')
+    }
   }, [])
 
   return (

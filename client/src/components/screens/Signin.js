@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import M from 'materialize-css'
 import { UserContext } from '../../App'
@@ -65,7 +66,7 @@ const Signin = () => {
                     Sign in
                 </button>
                 <h5>
-                    <a href="/signup">Do not have an account ?</a>
+                    <Link to="/signup">Do not have an account ?</Link>
                 </h5>
             </div>
         </div>

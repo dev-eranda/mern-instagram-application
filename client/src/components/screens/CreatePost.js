@@ -54,6 +54,11 @@ const CreatePost = () => {
         .then(res => res.json())
         .then(data => {
             setUrl(data.url)
+            console.log(data, "eranda")
+            if (data.error) {
+                M.toast({ html: data.error.message, classes: "#c62828 red darken-3" })
+            }
+
         })
         .catch(error => {
             console.log(error)
