@@ -22,7 +22,6 @@ const NavBar = () => {
     return (
         <nav>
             <div className="nav-wrapper white">
-                {console.log(state)}
                 <Link to={state ? "/" : "/signin"} className="brand-logo left">Instagram</Link>
                 <ul id="nav-mobile" className="right hide-on-med-and-down">
                     {renderList()}
