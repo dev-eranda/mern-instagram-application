@@ -17,10 +17,8 @@ const Routing = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"))
-    dispatch({ type: "USER", payload: user }) /* user close browser without logged out and again open browser set state */
-
     if (user) {
-      history.push('/')
+      dispatch({ type: "USER", payload: user }) /* user close browser without logged out and again open browser set state */
     }
     else {
       history.push('/signin')
