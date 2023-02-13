@@ -4,19 +4,19 @@ import { UserContext } from "../../App"
 const Profile = () => {
 
     const [mypics, setPics] = useState([])
-    const {state, dispatch} = useContext(UserContext)
+    const { state, dispatch } = useContext(UserContext)
 
     useEffect(() => {
         fetch('/mypost', {
             headers: {
-                "Authorization" : "Bearer " + localStorage.getItem("jwt")
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
-        }).then( res => res.json())
-        .then( result => {
-            setPics(result.mypost)
-        })
+        }).then(res => res.json())
+            .then(result => {
+                setPics(result.mypost)
+            })
     }, [])
-    
+
     return (
         <div style={{ maxWidth: "550px", margin: "0px auto" }}>
             <div style={{
@@ -31,7 +31,7 @@ const Profile = () => {
                     </img>
                 </div>
                 <div>
-                    <h4>{state.name}</h4>
+                    <h4>{state ? state.name : "loading..."}</h4>
                     <div style={{ display: "flex", justifyContent: "space-between", width: "108%" }}>
                         <h6>40 Posts</h6>
                         <h6>40 Followers</h6>
@@ -41,7 +41,7 @@ const Profile = () => {
             </div>
             <div className="gallery">
                 {mypics.map((item) => {
-                    return(
+                    return (
                         <img className="item" src={item.photo} alt={item.title} key={item._id}></img>
                     )
                 })}

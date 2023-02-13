@@ -24,19 +24,19 @@ const CreatePost = () => {
                     photoURI: url
                 })
             })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                if (data.error) {
-                    M.toast({ html: data.error, classes: "#c62828 red darken-3" })
-                }
-                else {
-                    M.toast({ html: "Created post successfully", classes: "#43a047 green darken-1" })
-                    // history.push('/')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    if (data.error) {
+                        M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                    }
+                    else {
+                        M.toast({ html: "Created post successfully", classes: "#43a047 green darken-1" })
+                        // history.push('/')
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
         }
     }, [url])
 
@@ -51,18 +51,18 @@ const CreatePost = () => {
             method: "post",
             body: data
         })
-        .then(res => res.json())
-        .then(data => {
-            setUrl(data.url)
-            console.log(data, "eranda")
-            if (data.error) {
-                M.toast({ html: data.error.message, classes: "#c62828 red darken-3" })
-            }
+            .then(res => res.json())
+            .then(data => {
+                setUrl(data.url)
+                console.log(data, "eranda")
+                if (data.error) {
+                    M.toast({ html: data.error.message, classes: "#c62828 red darken-3" })
+                }
 
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     return (

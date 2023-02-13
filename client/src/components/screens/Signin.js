@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import M from 'materialize-css'
 import { UserContext } from '../../App'

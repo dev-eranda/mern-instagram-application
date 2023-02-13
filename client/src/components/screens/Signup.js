@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import M from 'materialize-css'
 
@@ -11,7 +11,7 @@ const Signup = () => {
 
     const PostData = () => {
 
-        if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
             return M.toast({ html: "invalid email", classes: "#c62828 red darken-3" })
         }
 
@@ -26,17 +26,17 @@ const Signup = () => {
                 password
             })
         }).then(res => res.json())
-        .then(data => {
-            if (data.error) {
-                M.toast({ html: data.error, classes: "#c62828 red darken-3" })
-            }
-            else {
-                M.toast({ html: data.message, classes: "#43a047 green darken-1" })
-                history.push("/signin")
-            }
-        }).catch(error => {
-            console.log(error)
-        })
+            .then(data => {
+                if (data.error) {
+                    M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                }
+                else {
+                    M.toast({ html: data.message, classes: "#43a047 green darken-1" })
+                    history.push("/signin")
+                }
+            }).catch(error => {
+                console.log(error)
+            })
     }
 
     return (
