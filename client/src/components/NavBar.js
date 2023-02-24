@@ -7,12 +7,10 @@ const NavBar = () => {
     const { state, dispatch } = useContext(UserContext)
     const userName = localStorage.getItem("user")
     const history = useHistory()
-    console.log(userName.type)
 
     const renderList = () => {
         if (state) {
             return [
-                <li key={0}><Link to="#">op</Link></li>,
                 <li key={1}><Link to="/profile">Profile</Link></li>,
                 <li key={2}><Link to="/createpost">CreatePost</Link></li>,
                 <li key={3}>

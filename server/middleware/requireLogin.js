@@ -17,10 +17,8 @@ module.exports = (req, res, next) => {
             return res.status(401).json({error: "You must be logged in"})
         }
         const {_id} = payload
-
         User.findById(_id).then(userData => {
             req.user = userData
-            console.log(req)
             next()
         })
     })
