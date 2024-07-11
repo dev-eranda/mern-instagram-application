@@ -93,8 +93,6 @@ router.put('/comment', requireLogin, (req, res) => {
     .populate("postedBy", "_id name")
     .populate("comments.commentedBy", "_id name")
     .exec((error, result) => {
-
-        console.log(result)
         if(error){
             return res.status(422).json({error: error})
         }

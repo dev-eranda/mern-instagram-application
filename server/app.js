@@ -5,14 +5,14 @@ const app = express()
 const PORT = 5000
 const {MONGOURI} = require('./keys')
 
-// mongoose.set("strictQuery", false);
-// mongoose.connect(MONGOURI)
-// mongoose.connection.on('connected', () => {
-//     console.log("Mongodb connected successfully!")
-// })
-// mongoose.connection.on('error', (error) => {
-//     console.log("Mongodb error:", error)
-// })
+mongoose.set("strictQuery", false);
+mongoose.connect(MONGOURI)
+mongoose.connection.on('connected', () => {
+    console.log("Mongodb connected successfully!")
+})
+mongoose.connection.on('error', (error) => {
+    console.log("Mongodb error:", error)
+})
 
 require('./models/user')
 require('./models/post')
