@@ -16,7 +16,6 @@ const Home = () => {
         }).then(res => res.json())
             .then(result => {
                 setData(result.posts)
-                console.log(result.posts)
             })
     }, [])
 
@@ -109,7 +108,6 @@ const Home = () => {
         .then((res) => res.json())
         .then((result) => {
             const updatedData = data.filter((item) => item._id !== result._id);
-            //console.log(updatedData)
             //In here still not update
             setData(updatedData);
             M.toast({ html: "Successfully deleted", classes: "#c62828 red darken-3" });
