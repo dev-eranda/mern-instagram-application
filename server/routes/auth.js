@@ -1,8 +1,8 @@
 const express = require('express')
-const router = express.Router()
-const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
+const router = express.Router()
+const bcrypt = require('bcryptjs')
 const joi = require('joi')
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../keys')
@@ -19,7 +19,7 @@ router.post('/signup', async (req, res) => {
         return res.status(422).json({ error: error.details[0].message})
     }
     
-    const { name, email, password } = req.body
+    const { name, email, password } = value
 
     try {
         const savedUser = await User.findOne({ email: email })
@@ -39,12 +39,6 @@ router.post('/signup', async (req, res) => {
     }
     catch (error) {
         console.error(error);
-
-        if (error.name === "ValidationError") {
-            const errors = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ error: errors });
-        }
-
         res.status(500).json({ error: 'Internal server error' });
     }
 })
@@ -60,8 +54,8 @@ router.post('/signin', async (req, res) => {
     if(error){
         return res.status(422).json({ error: error.details[0].message})
     }
-    console.log(value)
-    const { email, password } = req.body
+
+    const { email, password } = value
 
     try {
         const user = await User.findOne({ email: email })
@@ -81,11 +75,6 @@ router.post('/signin', async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        if (error.name === "ValidationError") {
-            const error = object.value(error.errors.map(err => err.message))
-            console.log(error)
-            return res.status(400).json({ error })
-        }
         res.status(500).send('500 Internal server error')
     }
 })
