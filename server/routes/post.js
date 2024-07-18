@@ -56,9 +56,8 @@ router.get('/mypost', requireLogin, async (req, res) => {
     const { _id } = req.user
 
     try {
-        const myPost = await Post.find({ postedBy: _id }).populate("postedBy", "_id name")
-        return res.status(200).json({ post: myPost })
-
+        const post = await Post.find({ postedBy: _id }).populate("postedBy", "_id name")
+        return res.status(200).json({ post })
     }
     catch (error) {
         console.log(error)
@@ -66,19 +65,36 @@ router.get('/mypost', requireLogin, async (req, res) => {
     }
 })
 
-router.put('/like', requireLogin, (req, res) => {
-    Post.findByIdAndUpdate(req.body.postId, {
-        $push: { likes: req.user._id }
-    }, {
-        new: true
-    }).exec((error, result) => {
-        if (error) {
-            return res.status(422).json({ error: error })
+const likeSchema = joi.object({
+    postId: joi.string().length(24).hex().required()
+});
+
+router.put('/like', requireLogin, async (req, res) => {
+    const { error, value } = likeSchema.validate(req.body);
+    if (error) {
+        return res.status(422).json({ error: error.details[0].message })
+    }
+
+    try {
+        const { postId } = value
+        const { _id } = req.user
+
+        const post = await Post.findByIdAndUpdate(
+            postId,
+            { $addToSet: { likes: _id } }, // add like only once 
+            { new: true }
+        )
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
         }
-        else {
-            res.json(result)
-        }
-    })
+
+        return res.status(200).json({ post })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
 })
 
 router.put('/unlike', requireLogin, (req, res) => {
