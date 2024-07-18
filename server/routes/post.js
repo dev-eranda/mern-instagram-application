@@ -51,7 +51,7 @@ router.post('/post', requireLogin, async (req, res) => {
         })
 
         const post = await postObj.save()
-        return res.status(200).json({ post })
+        return res.status(201).json({ post })
     }
     catch (error) {
         console.log(error)
