@@ -9,7 +9,7 @@ const joi = require('joi')
 /*=====================================================================================
                                     GET ALL POST
 =====================================================================================*/
-router.get('/allpost', requireLogin, async (req, res) => {
+router.get('/post', requireLogin, async (req, res) => {
     try {
         const post = await Post.find()
             .populate("postedBy", "_id name")
@@ -32,7 +32,7 @@ const createpostSchema = joi.object({
     image_url: joi.string().required()
 })
 
-router.post('/createpost', requireLogin, async (req, res) => {
+router.post('/post', requireLogin, async (req, res) => {
     const { error, value } = createpostSchema.validate(req.body)
     if (error) {
         return res.status(422).json({ error: error.details[0].message })
@@ -63,7 +63,7 @@ router.post('/createpost', requireLogin, async (req, res) => {
 /*=====================================================================================
                                     GET MY POST
 =====================================================================================*/
-router.get('/mypost', requireLogin, async (req, res) => {
+router.get('post/my', requireLogin, async (req, res) => {
     const { _id } = req.user
 
     try {
@@ -84,7 +84,7 @@ const likeSchema = joi.object({
     postId: joi.string().length(24).hex().required()
 });
 
-router.put('/like', requireLogin, async (req, res) => {
+router.put('post/like', requireLogin, async (req, res) => {
     const { error, value } = likeSchema.validate(req.body);
     if (error) {
         return res.status(422).json({ error: error.details[0].message })
@@ -120,7 +120,7 @@ const unlikeSchema = joi.object({
     postId: joi.string().length(24).hex().required()
 });
 
-router.put('/unlike', requireLogin, async (req, res) => {
+router.put('post/unlike', requireLogin, async (req, res) => {
     const { error, value } = unlikeSchema.validate(req.body)
     if (error) {
         return res.status(400).json({ error: error.details[0].message })
@@ -159,7 +159,7 @@ const commentSchema = joi.object({
     text: joi.string().min(3).max(100).required()
 });
 
-router.put('/comment', requireLogin, async (req, res) => {
+router.put('post/comment', requireLogin, async (req, res) => {
     const { error, value } = commentSchema.validate(req.body)
     if (error) {
         return res.status(400).json({ error: error.details[0].message })
@@ -200,7 +200,7 @@ const deleteSchema = joi.object({
     postId: joi.string().length(24).hex().required(),
 });
 
-router.delete('/deletepost/:postId', requireLogin, async (req, res) => {
+router.delete('/post/:postId', requireLogin, async (req, res) => {
     const { error, value } = deleteSchema.validate(req.params)
     if (error) {
         return res.status(400).json({ error: error.details[0].message })
