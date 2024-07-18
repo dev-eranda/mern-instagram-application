@@ -38,8 +38,8 @@ router.post('/signup', async (req, res) => {
         return res.status(201).json({ message: "Siginup successful" })
     }
     catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 })
 
@@ -48,11 +48,10 @@ const signinSchema = joi.object({
     password: joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
 })
 
-
 router.post('/signin', async (req, res) => {
-    const {error, value} = signinSchema.validate(req.body)
-    if(error){
-        return res.status(422).json({ error: error.details[0].message})
+    const { error, value } = signinSchema.validate(req.body)
+    if (error) {
+        return res.status(422).json({ error: error.details[0].message })
     }
 
     const { email, password } = value
@@ -60,22 +59,25 @@ router.post('/signin', async (req, res) => {
     try {
         const user = await User.findOne({ email: email })
         if (!user) {
-            res.status(422).json({ error: "Invalid credentials" })
+            return res.status(422).json({ error: "Invalid credentials" })
         }
 
         const match = await bcrypt.compare(password, user.password)
         if (match) {
-            const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, JWT_SECRET, {expiresIn: '15m'})
+            const token = jwt.sign(
+                { _id: user._id, name: user.name, email: user.email },
+                JWT_SECRET,
+                { expiresIn: '15m' }
+            )
             const { _id, name, email } = user
             return res.status(200).json({ token, user: { _id, name, email } })
-        }
-        else{
-            res.status(422).json({ error: "Invalid credentials" })
+        } else {
+            return res.status(422).json({ error: "Invalid credentials" })
         }
 
     } catch (error) {
         console.log(error)
-        res.status(500).send('500 Internal server error')
+        return res.status(500).send('500 Internal server error')
     }
 })
 

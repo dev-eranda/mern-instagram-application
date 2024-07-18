@@ -17,7 +17,7 @@ router.get('/post', requireLogin, async (req, res) => {
         return res.status(200).json({ post })
     }
     catch (error) {
-        console.log("cannot find all post:", error)
+        console.log(error)
         return res.status(500).send("500 Internal server error")
     }
 })
@@ -128,7 +128,7 @@ router.put('/post/unlike', requireLogin, async (req, res) => {
 
     const { postId } = value
     const { _id } = req.user
-    console.log(postId, _id)
+
     try {
         const post = await Post.findByIdAndUpdate(
             postId,
