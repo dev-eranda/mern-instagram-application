@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
-import M from 'materialize-css'
+// import M from 'materialize-css'
 
 const Signup = () => {
     const history = useHistory()
@@ -12,7 +12,7 @@ const Signup = () => {
     const PostData = () => {
 
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            return M.toast({ html: "invalid email", classes: "#c62828 red darken-3" })
+            // return M.toast({ html: "invalid email", classes: "#c62828 red darken-3" })
         }
 
         fetch("/signup", {
@@ -28,10 +28,10 @@ const Signup = () => {
         }).then(res => res.json())
             .then(data => {
                 if (data.error) {
-                    M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                    // M.toast({ html: data.error, classes: "#c62828 red darken-3" })
                 }
                 else {
-                    M.toast({ html: data.message, classes: "#43a047 green darken-1" })
+                    // M.toast({ html: data.message, classes: "#43a047 green darken-1" })
                     history.push("/signin")
                 }
             }).catch(error => {

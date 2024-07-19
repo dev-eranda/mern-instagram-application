@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import M from 'materialize-css'
+// import M from 'materialize-css'
 
 const CreatePost = () => {
 
@@ -25,10 +25,10 @@ const CreatePost = () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.error) {
-                        M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                        // M.toast({ html: data.error, classes: "#c62828 red darken-3" })
                     }
                     else {
-                        M.toast({ html: "Created post successfully", classes: "#43a047 green darken-1" })
+                        // M.toast({ html: "Created post successfully", classes: "#43a047 green darken-1" })
                     }
                 }).catch(error => {
                     console.log(error)
@@ -51,7 +51,7 @@ const CreatePost = () => {
             .then(data => {
                 setUrl(data.url)
                 if (data.error) {
-                    M.toast({ html: data.error.message, classes: "#c62828 red darken-3" })
+                    // M.toast({ html: data.error.message, classes: "#c62828 red darken-3" })
                 }
 
             })

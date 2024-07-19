@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from "../../App"
-import M from 'materialize-css'
+// import M from 'materialize-css'
 
 
 const Home = () => {
@@ -78,43 +78,43 @@ const Home = () => {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             },
-            body:JSON.stringify({
+            body: JSON.stringify({
                 postId,
                 text
             })
         }).then(res => res.json())
-        .then(result => {
-            const newData = data.map(item => {
-                if (item._id === result._id) {
-                    return result
-                }
-                else {
-                    return item
-                }
+            .then(result => {
+                const newData = data.map(item => {
+                    if (item._id === result._id) {
+                        return result
+                    }
+                    else {
+                        return item
+                    }
+                })
+                setData(newData)
+            }).catch(error => {
+                console.log(error)
             })
-            setData(newData)
-        }).catch(error => {
-            console.log(error)
-        })
     }
 
     const deletepost = (postId) => {
         fetch(`/deletepost/${postId}`, {
-          method: "delete",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("jwt"),
-          },
+            method: "delete",
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
         })
-        .then((res) => res.json())
-        .then((result) => {
-            const updatedData = data.filter((item) => item._id !== result._id);
-            //In here still not update
-            setData(updatedData);
-            M.toast({ html: "Successfully deleted", classes: "#c62828 red darken-3" });
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+            .then((res) => res.json())
+            .then((result) => {
+                const updatedData = data.filter((item) => item._id !== result._id);
+                //In here still not update
+                setData(updatedData);
+                // M.toast({ html: "Successfully deleted", classes: "#c62828 red darken-3" });
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     return (
@@ -123,7 +123,7 @@ const Home = () => {
                 return (
                     <div className="card home-card" key={item._id}>
                         <h5>{item.postedBy.name}
-                            {item.postedBy._id === state._id && <i className="material-icons" style={{float:'right', cursor:'pointer'}} onClick={() => deletepost(item._id)} >delete</i>}
+                            {item.postedBy._id === state._id && <i className="material-icons" style={{ float: 'right', cursor: 'pointer' }} onClick={() => deletepost(item._id)} >delete</i>}
                         </h5>
                         <div className="card-image">
                             <img src={item.photo}
@@ -141,8 +141,8 @@ const Home = () => {
                             <p>{item.body}</p>
                             {
                                 item.comments.map(record => {
-                                    return(
-                                        <h6 key={record._id}><span style={{fontWeight: "500"}}>{record.commentedBy.name}</span> {record.text}</h6>
+                                    return (
+                                        <h6 key={record._id}><span style={{ fontWeight: "500" }}>{record.commentedBy.name}</span> {record.text}</h6>
                                     )
                                 })
                             }
