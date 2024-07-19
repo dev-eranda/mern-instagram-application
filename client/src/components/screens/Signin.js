@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
-import M from 'materialize-css'
+// import M from 'materialize-css'
 import { UserContext } from '../../App'
 
 const Signin = () => {
@@ -14,7 +14,7 @@ const Signin = () => {
     const PostData = () => {
 
         if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            return M.toast({ html: "invalid email", classes: "#c62828 red darken-3" })
+            // return M.toast({ html: "invalid email", classes: "#c62828 red darken-3" })
         }
 
         fetch("/signin", {
@@ -29,13 +29,13 @@ const Signin = () => {
         }).then(res => res.json())
             .then(data => {
                 if (data.error) {
-                    M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                    // M.toast({ html: data.error, classes: "#c62828 red darken-3" })
                 }
                 else {
                     localStorage.setItem("jwt", data.token)
                     localStorage.setItem("user", JSON.stringify(data.user))
                     dispatch({ type: "USER", payload: data.user })
-                    M.toast({ html: "Success", classes: "#43a047 green darken-1" })
+                    // M.toast({ html: "Success", classes: "#43a047 green darken-1" })
                     history.push('/')
                 }
             }).catch(error => {
