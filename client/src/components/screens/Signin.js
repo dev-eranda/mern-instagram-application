@@ -47,6 +47,13 @@ const Signin = () => {
         <div className="mycard">
             <div className="card auth-card input-field">
                 <h2>Instagram</h2>
+                <div class='row'>
+                    <div class="input-field col s6">
+                        <input placeholder="Placeholder" id="first_name" type="text" class="validate" />
+                        <label for="first_name">First Name</label>
+                    </div>
+                </div>
+
                 <input
                     type="text"
                     placeholder="email"
