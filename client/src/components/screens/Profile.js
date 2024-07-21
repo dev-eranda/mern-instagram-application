@@ -7,13 +7,13 @@ const Profile = () => {
     const { state, dispatch } = useContext(UserContext)
 
     useEffect(() => {
-        fetch('/mypost', {
+        fetch('/post/my', {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
         }).then(res => res.json())
             .then(result => {
-                setPics(result.mypost)
+                setPics(result.post)
             })
     }, [])
 

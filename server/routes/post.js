@@ -2,122 +2,230 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const Post = mongoose.model('Post')
-const requireLogin = require('../middleware/requireLogin') 
+const requireLogin = require('../middleware/requireLogin')
+const joi = require('joi')
 
 
-router.get('/allpost', requireLogin, (req, res) => {
-    Post.find()
-    .populate("postedBy", "_id name")
-    .populate("comments.commentedBy", "_id name")
-    .then(posts => {
-        res.json({ posts })
-    })
-    .catch(error => {
-        console.log(error)
-    })
-})
-
-router.post('/createpost', requireLogin, (req, res) => {
-    const {title, body, photoURI} = req.body
-    if(!title || !body || !photoURI) {
-        return res.status(422).json({error: "plase add all the fiedls"})
+/*=====================================================================================
+                                    GET ALL POST
+=====================================================================================*/
+router.get('/post', requireLogin, async (req, res) => {
+    try {
+        const post = await Post.find()
+            .populate("postedBy", "_id name")
+            .populate("comments.commentedBy", "_id name")
+        return res.status(200).json({ post })
     }
-    req.user.password = undefined
-    const post = new Post ({
-        title,
-        body,
-        photo: photoURI,
-        postedBy: req.user
-    })
-    post.save().then(result => {
-        res.json({ post: result })
-    })
-    .catch(error => {
+    catch (error) {
         console.log(error)
-    }) 
+        return res.status(500).send("500 Internal server error")
+    }
 })
 
-router.get('/mypost', requireLogin, (req, res) => {
-    Post.find({ postedBy: req.user._id })
-    .populate("postedBy", "_id name")
-    .then( mypost => {
-        res.json({ mypost })
-    })
-    .catch( error => {
+
+/*=====================================================================================
+                                    CREATE NEW POST
+=====================================================================================*/
+const createpostSchema = joi.object({
+    title: joi.string().min(1).max(50).required(),
+    body: joi.string().min(1).max(100).required(),
+    image_url: joi.string().required()
+})
+
+router.post('/post', requireLogin, async (req, res) => {
+    const { error, value } = createpostSchema.validate(req.body)
+    if (error) {
+        return res.status(422).json({ error: error.details[0].message })
+    }
+
+    try {
+        const { title, body, image_url } = value
+        const user = req.user
+        user.password = undefined
+
+        const postObj = new Post({
+            title,
+            body,
+            photo: image_url,
+            postedBy: user
+        })
+
+        const post = await postObj.save()
+        return res.status(201).json({ post })
+    }
+    catch (error) {
         console.log(error)
-    })
+        return res.status(500).send("500 Internal server error")
+    }
 })
 
-router.put('/like', requireLogin, (req, res) => {
-    Post.findByIdAndUpdate(req.body.postId, {
-        $push: {likes: req.user._id}
-    }, {
-        new: true
-    }).exec((error, result) => {
-        if(error){
-            return res.status(422).json({error: error})
-        }
-        else{
-            res.json(result)
-        }
-    })
+
+/*=====================================================================================
+                                    GET MY POST
+=====================================================================================*/
+router.get('/post/my', requireLogin, async (req, res) => {
+    const { _id } = req.user
+
+    try {
+        const post = await Post.find({ postedBy: _id }).populate("postedBy", "_id name")
+        return res.status(200).json({ post })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
 })
 
-router.put('/unlike', requireLogin, (req, res) => {
-    Post.findByIdAndUpdate(req.body.postId, {
-        $pull: {likes: req.user._id}
-    }, {
-        new: true
-    }).exec((error, result) => {
-        if(error){
-            return res.status(422).json({error: error})
+
+/*=====================================================================================
+                                        LIKE
+=====================================================================================*/
+const likeSchema = joi.object({
+    postId: joi.string().length(24).hex().required()
+});
+
+router.put('/post/like', requireLogin, async (req, res) => {
+    const { error, value } = likeSchema.validate(req.body);
+    if (error) {
+        return res.status(422).json({ error: error.details[0].message })
+    }
+
+    try {
+        const { postId } = value
+        const { _id } = req.user
+
+        const post = await Post.findByIdAndUpdate(
+            postId,
+            { $addToSet: { likes: _id } }, // add like only once 
+            { new: true }
+        )
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
         }
-        else{
-            res.json(result)
-        }
-    })
+
+        return res.status(200).json({ post })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
 })
 
-router.put('/comment', requireLogin, (req, res) => {
+
+/*=====================================================================================
+                                        UNLIKE
+=====================================================================================*/
+const unlikeSchema = joi.object({
+    postId: joi.string().length(24).hex().required()
+});
+
+router.put('/post/unlike', requireLogin, async (req, res) => {
+    const { error, value } = unlikeSchema.validate(req.body)
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message })
+    }
+
+    const { postId } = value
+    const { _id } = req.user
+
+    try {
+        const post = await Post.findByIdAndUpdate(
+            postId,
+            { $pull: { likes: _id } },
+            { new: true })
+
+        console.log(post)
+
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" })
+        }
+
+        return res.status(200).json({ post })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
+
+})
+
+
+/*=====================================================================================
+                                        COMMENT
+=====================================================================================*/
+const commentSchema = joi.object({
+    postId: joi.string().length(24).hex().required(),
+    text: joi.string().min(3).max(100).required()
+});
+
+router.put('/post/comment', requireLogin, async (req, res) => {
+    const { error, value } = commentSchema.validate(req.body)
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message })
+    }
+
+    const { postId, text } = value
+    const { _id } = req.user
 
     comment = {
-        text: req.body.text,
-        commentedBy: req.user._id
+        text,
+        commentedBy: _id
     }
 
-    Post.findByIdAndUpdate(req.body.postId, {
-        $push: {comments: comment}
-    }, {
-        new: true
-    })
-    .populate("postedBy", "_id name")
-    .populate("comments.commentedBy", "_id name")
-    .exec((error, result) => {
-        if(error){
-            return res.status(422).json({error: error})
+    try {
+        const post = await Post.findByIdAndUpdate(
+            postId,
+            { $push: { comments: comment } },
+            { new: true })
+            .populate("postedBy", "_id name")
+            .populate("comments.commentedBy", "_id name")
+
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" })
         }
-        else{
-            res.json(result)
-        }
-    })
+
+        return res.status(200).json({ post })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
 })
 
-router.delete('/deletepost/:postId', requireLogin, (req, res) => {
-    Post.findOne({_id:req.params.postId})
-    .populate("postedBy", "_id")
-    .exec((error, post) => {
-        if(error || !post){
-            return res.json(422).json({error: error})
+/*=====================================================================================
+                                        DELETE
+=====================================================================================*/
+const deleteSchema = joi.object({
+    postId: joi.string().length(24).hex().required(),
+});
+
+router.delete('/post/:postId', requireLogin, async (req, res) => {
+    const { error, value } = deleteSchema.validate(req.params)
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message })
+    }
+
+    const { postId } = value
+    const { _id } = req.user
+
+    try {
+        const post = await Post.findOne({ _id: postId }).populate("postedBy", "_id")
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
         }
-        if(post.postedBy._id.toString() === req.user._id.toString()){
-            post.remove()
-            .then(result => {
-                res.json({result})
-            }).catch(error => {
-                console.log(error)
-            })
+
+        if (post.postedBy._id.toString() !== _id.toString()) {
+            return res.status(403).json({ message: "You can not delete this post" })
         }
-    })
+        
+        await post.remove()
+        return res.status(200).json({ message: "Post delete successful" })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
 })
 
 module.exports = router

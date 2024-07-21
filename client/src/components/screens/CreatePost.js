@@ -10,7 +10,7 @@ const CreatePost = () => {
 
     useEffect(() => {
         if (url) {
-            fetch("/createpost", {
+            fetch("/post", {
                 method: "post",
                 headers: {
                     "Content-Type": "Application/json",
@@ -19,7 +19,7 @@ const CreatePost = () => {
                 body: JSON.stringify({
                     title,
                     body,
-                    photoURI: url
+                    image_url: url
                 })
             })
                 .then(res => res.json())
