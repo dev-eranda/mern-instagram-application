@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
-// import logo from "../../assets/images/logo-white.png";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
@@ -21,14 +20,28 @@ const Login: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    const { email, password } = data;
     try {
-      console.log(data);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      throw new Error();
-    } catch (error) {
-      setError("root", {
-        message: "Email is already taken",
+      const response = await fetch("/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
+
+      const result = await response.json();
+      if (result.error) {
+        throw new Error(result.error);
+      } else {
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError("root", {
+          type: "manual",
+          message: error.message || "An unexpected error occurred",
+        });
+      }
     }
   };
 
