@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
 // import logo from "../../assets/images/logo-white.png";
 import Toast from "../../components/ui/Toast";
@@ -12,7 +11,6 @@ import "./styles.css";
 const View = () => {
   const { Formik } = formik;
   const [toast, setToast] = useState({ show: false, message: "", color: "" });
-  const history = useHistory();
 
   const handleSubmit = async (value) => {
     const { email, password } = value;
@@ -38,7 +36,6 @@ const View = () => {
         localStorage.setItem("jwt", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         setToast({ show: true, message: "Login successful" });
-        history.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -87,11 +84,7 @@ const View = () => {
                     }) => (
                       <Form noValidate onSubmit={handleSubmit}>
                         <Row className="mb-3">
-                          <Form.Group
-                            as={Col}
-                            md="12"
-                            controlId="validationFormikEmail"
-                          >
+                          <Form.Group as={Col} md="12" controlId="validationFormikEmail">
                             <Form.Label>Email</Form.Label>
                             <Form.Control
                               type="text"
@@ -111,11 +104,7 @@ const View = () => {
                           </Form.Group>
                         </Row>
                         <Row className="mb-3">
-                          <Form.Group
-                            as={Col}
-                            md="12"
-                            controlId="validationFormikPassword"
-                          >
+                          <Form.Group as={Col} md="12" controlId="validationFormikPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                               type="password"
@@ -154,8 +143,7 @@ const View = () => {
                   <hr className="seperator" />
                   <div className="no-account">
                     <p>
-                      Don't have an account ? Get your{" "}
-                      <a href="/register">Free account Now</a>
+                      Don't have an account ? Get your <a href="/register">Free account Now</a>
                     </p>
                   </div>
                   <div className="no-account">

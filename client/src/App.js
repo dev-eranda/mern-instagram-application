@@ -1,8 +1,8 @@
 import React, { useEffect, createContext, useReducer, useContext } from "react";
 import NavBar from "./components/NavBar";
 // import "./App.css"
-import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
-// import Home from "./components/screens/Home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Post1 from "./components/screens/Home";
 // import Signin from "./components/screens/Signin";
 // import Signup from "./components/screens/Signup";
 // import Profile from "./components/screens/Profile";
@@ -10,12 +10,13 @@ import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
 import { reducer, initialState } from "./reducers/userReducer";
 
 import Login from "./features/auth/Login";
+import Register from "./features/auth/Register";
+import Post from "./features/post/Post";
 // import Login from "./screens/login/view";
 
 export const UserContext = createContext();
 
 const Routing = () => {
-  const history = useHistory();
   const { state, dispatch } = useContext(UserContext);
 
   // useEffect(() => {
@@ -29,26 +30,16 @@ const Routing = () => {
   // }, [])
 
   return (
-    <Switch>
-      <Route exact path="/">
-        {/* <Home /> */}
-      </Route>
-      <Route path="/login">
-        <Login />
-      </Route>
-      {/* <Route path="/signin">
-        <Signin />
-      </Route>
-      <Route path="/signup">
-        <Signup />
-      </Route>
-      <Route path="/profile">
-        <Profile />
-      </Route>
-      <Route path="/createpost">
-        <CreatePost />
-      </Route> */}
-    </Switch>
+    <Routes>
+      <Route path="/" element={<Post />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      {/* Uncomment and update the following routes as needed */}
+      {/* <Route path="/signin" element={<Signin />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/createpost" element={<CreatePost />} /> */}
+    </Routes>
   );
 };
 

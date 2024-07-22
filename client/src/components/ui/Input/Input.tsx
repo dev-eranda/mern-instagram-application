@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import "./Input.css";
 
 interface InputProps {
@@ -9,6 +10,7 @@ interface InputProps {
   error?: string;
   register: any;
   placeholder?: string;
+  className?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,9 +21,10 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   error,
   register,
+  className,
 }) => {
   return (
-    <div className="input-container">
+    <div className={classNames("input-container", className)}>
       <label className="input-label" htmlFor={name}>
         {label}
       </label>

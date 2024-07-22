@@ -5,6 +5,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
 import { z } from "zod";
+import { useDispatch } from "react-redux";
+import { login } from "../../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+
 import "./Login.css";
 
 type FormFields = z.infer<typeof schema>;
@@ -18,6 +22,8 @@ const Login: React.FC = () => {
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     const { email, password } = data;
@@ -34,6 +40,8 @@ const Login: React.FC = () => {
       if (result.error) {
         throw new Error(result.error);
       } else {
+        dispatch(login({ isAuthenticate: true, user: result }));
+        navigate("/");
       }
     } catch (error) {
       if (error instanceof Error) {

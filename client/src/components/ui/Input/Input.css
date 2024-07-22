@@ -1,11 +1,7 @@
 .input-container {
   display: flex;
   flex-wrap: wrap;
-  /* margin-right: -5px; */
-  /* margin-left: -5px; */
-  /* padding-right: 5px; */
-  /* padding-left: 5px; */
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .input-label {
@@ -19,7 +15,7 @@
 .input-control {
   display: block;
   width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
+  height: calc(1em + 0.75rem + 2px);
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
@@ -32,17 +28,17 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/* .input-control {
-  background: #ffffff;
-  box-shadow: 0px 0px 3px #00000024;
-  border: 1px solid #d8d8d8;
-  border-radius: 4px;
-} */
+.input-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+  outline: none;
+}
+
 .input-error-container {
   height: 1rem;
 }
 
 .input-error {
   color: red;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
