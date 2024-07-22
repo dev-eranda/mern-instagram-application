@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
-import logo from "../../assets/images/logo-white.png";
+// import logo from "../../assets/images/logo-white.png";
 import Toast from "../../components/ui/Toast";
 import * as formik from "formik";
 import { schema } from "./schema";

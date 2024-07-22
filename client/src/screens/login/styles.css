@@ -34,38 +34,6 @@ body {
 .hm-col2 {
     position: relative;
     background-color: var(--white);
-    display: flex;
-    height: 100vh;
-}
-
-.hm-col-wrap {
-    position: relative;
-    display: block;
-    margin-right: 50px;
-    margin-bottom: 92px;
-}
-
-.hmlogo {
-    position: relative;
-    display: block;
-    margin-bottom: 33px;
-    text-align: right;
-}
-
-.login-title {
-    position: relative;
-    display: block;
-}
-
-.login-title h1 {
-    font-size: 33px;
-    font-weight: 700;
-    color: var(--white);
-}
-
-.hm-col2 {
-    position: relative;
-    background-color: var(--white);
     background-repeat: no-repeat;
     background-position: 121% -9%;
     display: flex;
