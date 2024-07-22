@@ -1,35 +1,60 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "../../assets/images/logo-white.png";
+import { useHistory } from "react-router-dom";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import logo from "../../assets/images/logo-white.png";
+import Toast from "../../components/ui/Toast";
 import * as formik from "formik";
-import * as yup from "yup";
+import { schema } from "./schema";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
 
 const View = () => {
   const { Formik } = formik;
+  const [toast, setToast] = useState({ show: false, message: "", color: "" });
+  const history = useHistory();
 
-  const schema = yup.object().shape({
-    email: yup.string().email("Invalid email").required("Email is required"),
-    password: yup
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(20, "Password must be no more than 20 characters")
-      .required("Password is required"),
-    keepme: yup.boolean(),
-  });
+  const handleSubmit = async (value) => {
+    const { email, password } = value;
 
-  const handleSubmit = (event) => {};
+    try {
+      const response = await fetch("/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        setToast({
+          show: true,
+          message: "Invalid email or password",
+          color: "Danger",
+        });
+      } else {
+        localStorage.setItem("jwt", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setToast({ show: true, message: "Login successful" });
+        history.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+      setToast({ show: true, message: "An error occurred", color: "Danger" });
+    }
+  };
 
   return (
     <div className="hm-login">
       <Container fluid>
         <Row className="g-0">
-          <Col md={6}>
+          <Col md={6} className="d-none d-md-block">
             <div className="hm-col1">
               <div className="hm-col-wrap">
                 <div className="hmlogo">
-                  <img src={logo} className="logo-white" alt="logo" />
+                  {/* <img src={logo} className="logo-white" alt="logo" /> */}
                 </div>
                 <div className="login-title">
                   <h1>Members Login</h1>
@@ -44,14 +69,22 @@ const View = () => {
                 <div className="l-form">
                   <Formik
                     validationSchema={schema}
-                    onSubmit={console.log}
+                    onSubmit={handleSubmit}
                     initialValues={{
                       email: "",
                       password: "",
                       keepme: false,
+                      validateOnChange: false,
                     }}
                   >
-                    {({ handleSubmit, handleChange, values, errors }) => (
+                    {({
+                      handleSubmit,
+                      handleChange,
+                      handleBlur,
+                      setFieldTouched,
+                      values,
+                      errors,
+                    }) => (
                       <Form noValidate onSubmit={handleSubmit}>
                         <Row className="mb-3">
                           <Form.Group
@@ -66,6 +99,10 @@ const View = () => {
                               name="email"
                               value={values.email}
                               onChange={handleChange}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                setFieldTouched("email", true);
+                              }}
                               isInvalid={!!errors.email}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -85,6 +122,10 @@ const View = () => {
                               name="password"
                               value={values.password}
                               onChange={handleChange}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                setFieldTouched("password", true);
+                              }}
                               isInvalid={!!errors.password}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -126,6 +167,12 @@ const View = () => {
           </Col>
         </Row>
       </Container>
+      <Toast
+        show={toast.show}
+        onClose={() => setToast({ show: false, message: "" })}
+        message={toast.message}
+        color={toast.color}
+      />
     </div>
   );
 };
