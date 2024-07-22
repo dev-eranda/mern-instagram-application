@@ -22,5 +22,5 @@ app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 
 app.listen(PORT, ()=>{
-    console.log("Server is runnig on", `http://localhost:${PORT}`)
+    console.log("Server is runnig on", `http://192.168.8.124:${PORT}`)
 })

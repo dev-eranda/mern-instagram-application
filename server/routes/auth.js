@@ -24,7 +24,7 @@ router.post('/signup', async (req, res) => {
     try {
         const savedUser = await User.findOne({ email: email })
         if (savedUser) {
-            return res.status(422).json({ error: "User alreasy exists with that email" })
+            return res.status(422).json({ error: "User alreasy exists with this email" })
         }
 
         const hashedPassword = await bcrypt.hash(password, 12)
@@ -59,7 +59,7 @@ router.post('/signin', async (req, res) => {
     try {
         const user = await User.findOne({ email: email })
         if (!user) {
-            return res.status(422).json({ error: "Invalid credentials" })
+            return res.status(422).json({ error: "Sorry, your email or password was incorrect." })
         }
 
         const match = await bcrypt.compare(password, user.password)
@@ -72,7 +72,7 @@ router.post('/signin', async (req, res) => {
             const { _id, name, email } = user
             return res.status(200).json({ token, user: { _id, name, email } })
         } else {
-            return res.status(422).json({ error: "Invalid credentials" })
+            return res.status(422).json({ error: "Sorry, your email or password was incorrect." })
         }
 
     } catch (error) {
