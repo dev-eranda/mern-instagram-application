@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../keys')
 
 const signupSchema = joi.object({
-    name: joi.string().alphanum().min(3).max(50).required(),
+    name: joi.string().min(3).max(50).required(),
     email: joi.string().email().required(),
     password: joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
 })
