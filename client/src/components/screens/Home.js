@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../App";
+// import { UserContext } from "../../App";
 // import M from 'materialize-css'
 
 const Home = () => {
   const [data, setData] = useState([]);
-  const { state, dispatch } = useContext(UserContext);
+  // const { state, dispatch } = useContext(UserContext);
+  const state = "hello";
 
   useEffect(() => {
     fetch("/post", {
@@ -178,9 +179,7 @@ const Home = () => {
               {item.comments.map((record) => {
                 return (
                   <h6 key={record._id}>
-                    <span style={{ fontWeight: "500" }}>
-                      {record.commentedBy.name}
-                    </span>{" "}
+                    <span style={{ fontWeight: "500" }}>{record.commentedBy.name}</span>{" "}
                     {record.text}
                   </h6>
                 );

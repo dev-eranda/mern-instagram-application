@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const r_schema = z
+export const schema = z
   .object({
     firstName: z.string().min(1, { message: "First name is required" }).max(20),
     lastName: z.string(),

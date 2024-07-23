@@ -3,7 +3,7 @@ import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schema } from "./schema";
+import { schema } from "./loginSchema";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import { login } from "../../slices/authSlice";
@@ -40,8 +40,9 @@ const Login: React.FC = () => {
       if (result.error) {
         throw new Error(result.error);
       } else {
+        localStorage.setItem("user", JSON.stringify(result));
         dispatch(login({ isAuthenticate: true, user: result }));
-        navigate("/");
+        navigate("/post");
       }
     } catch (error) {
       if (error instanceof Error) {

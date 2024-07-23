@@ -1,24 +1,27 @@
 import React, { useEffect, createContext, useReducer, useContext } from "react";
-import NavBar from "./components/NavBar";
-// import "./App.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Post1 from "./components/screens/Home";
+// import NavBar from "./components/NavBar";
+// import Post1 from "./components/screens/Home";
+// import "./App.css"
 // import Signin from "./components/screens/Signin";
 // import Signup from "./components/screens/Signup";
 // import Profile from "./components/screens/Profile";
 // import CreatePost from "./components/screens/CreatePost";
-import { reducer, initialState } from "./reducers/userReducer";
+// import { reducer, initialState } from "./reducers/userReducer";
+// import login from "./hooks/useAuth";
+import { login } from "./slices/authSlice";
+import { useDispatch } from "react-redux";
 
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
 import Post from "./features/post/Post";
-// import Login from "./screens/login/view";
+import ProtectedRoute from "./routes/ProtectedRoutes";
+import PublicRoute from "./routes/PublicRoutes";
 
-export const UserContext = createContext();
+// export const UserContext = createContext();
 
 const Routing = () => {
-  const { state, dispatch } = useContext(UserContext);
-
+  // const { state, dispatch } = useContext(UserContext);
   // useEffect(() => {
   //   const user = JSON.parse(localStorage.getItem("user"))
   //   if (user) {
@@ -28,32 +31,31 @@ const Routing = () => {
   //     history.push('/signin')
   //   }
   // }, [])
-
-  return (
-    <Routes>
-      <Route path="/" element={<Post />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      {/* Uncomment and update the following routes as needed */}
-      {/* <Route path="/signin" element={<Signin />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/createpost" element={<CreatePost />} /> */}
-    </Routes>
-  );
 };
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // const [state, dispatch] = useReducer(reducer, initialState);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      dispatch(login({ isAuthenticated: true, user: user }));
+    }
+  }, [dispatch]);
+
   return (
-    <UserContext.Provider value={{ state, dispatch }}>
-      {" "}
-      {/* Access state and dispatch in all the routes */}
-      <BrowserRouter>
-        {/* <NavBar /> */}
-        <Routing /> {/* Access the history */}
-      </BrowserRouter>
-    </UserContext.Provider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<PublicRoute element={<Login />} />} />
+        <Route path="/register" element={<PublicRoute element={<Register />} />} />
+
+        <Route path="/post" element={<ProtectedRoute element={<Post />} />} />
+        {/* Uncomment and update the following routes as needed 
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/createpost" element={<CreatePost />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 

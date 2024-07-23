@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { r_schema } from "./r_schema";
+import { schema } from "./registrationSchema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
-type FormFields = z.infer<typeof r_schema>;
+type FormFields = z.infer<typeof schema>;
 
 const Register: React.FC = () => {
   const {
@@ -19,7 +19,7 @@ const Register: React.FC = () => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
-    resolver: zodResolver(r_schema),
+    resolver: zodResolver(schema),
   });
   //   const dispatch = useDispatch();
   const navigate = useNavigate();

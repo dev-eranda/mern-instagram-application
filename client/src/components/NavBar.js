@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../App";
+// import { UserContext } from "../App";
 
 const NavBar = () => {
-  const { state, dispatch } = useContext(UserContext);
+  // const { state, dispatch } = useContext(UserContext);
   const userName = localStorage.getItem("user");
+  const state = "hello";
 
   const renderList = () => {
     if (state) {
@@ -20,7 +21,7 @@ const NavBar = () => {
             className="btn #c62828 red darken-3"
             onClick={() => {
               localStorage.clear();
-              dispatch({ type: "CLEAR" });
+              // dispatch({ type: "CLEAR" });
             }}
           >
             Logout
