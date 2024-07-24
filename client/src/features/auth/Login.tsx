@@ -8,7 +8,6 @@ import { z } from "zod";
 import { useDispatch } from "react-redux";
 import { login } from "../../slices/authSlice";
 import { useNavigate } from "react-router-dom";
-
 import "./Login.css";
 
 type FormFields = z.infer<typeof schema>;
@@ -27,6 +26,7 @@ const Login: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     const { email, password } = data;
+
     try {
       const response = await fetch("/signin", {
         method: "POST",
@@ -37,6 +37,8 @@ const Login: React.FC = () => {
       });
 
       const result = await response.json();
+
+      console.log(result);
       if (result.error) {
         throw new Error(result.error);
       } else {

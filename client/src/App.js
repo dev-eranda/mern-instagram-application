@@ -38,9 +38,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const { token, user } = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      dispatch(login({ isAuthenticated: true, user: user }));
+      dispatch(login({ isAuthenticated: true, user: user, token: token }));
     }
   }, [dispatch]);
 
