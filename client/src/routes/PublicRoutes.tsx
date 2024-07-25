@@ -12,9 +12,9 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ element }) => {
   const location = useLocation();
 
   if (isAuthenticated) {
-    const from = location.state?.from?.pathname || "/post";
-    return <Navigate to={from} replace />;
-    // return <Navigate to="/post" state={{ from: location }} replace />;
+    // const from = location.state?.from?.pathname || "/post";
+    // return <Navigate to={from} replace />;
+    return <Navigate to="/post" state={{ from: location }} replace />;
   }
 
   return element;
