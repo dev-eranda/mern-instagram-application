@@ -1,24 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import { PostCard } from "../../components/ui/Card";
-import { Row, Col, Container } from "react-bootstrap";
 import { RootState } from "../../types";
-// import { photo } from "../../assets/images/logo.jpg";
-
+import Header from "../../components/Header/Header";
 import NavBar from "../../components/NavBar";
-
 import "./Post.css";
 
 const Post = () => {
   const [open, setOpen] = useState(false);
+
   const dispatch = useDispatch();
   const fetchInitiated = useRef(false);
 
   const { isAuthenticated, token } = useSelector((state: RootState) => state.auth);
+  const { hamberger } = useSelector((state: RootState) => state.global);
 
-  // console.log(token);
+  // console.log(hamberger);
   // console.log(isAuthenticated);
 
   const fetchData = async (token: string) => {
@@ -38,41 +35,25 @@ const Post = () => {
       const data = await response.json();
       // console.log(data);
     } catch (error) {
-      // console.error("There was a problem with the fetch operation:", error);
+      console.error("Error", error);
     }
-  };
-
-  // component
-
-  useEffect(() => {
-    if (isAuthenticated && token) {
-      fetchInitiated.current = true;
-      fetchData(token);
-    }
-  }, [isAuthenticated]);
-
-  const handleNavbar = () => {
-    setOpen(!open);
-
-    // const navbar = document.getElementById("navbar");
-    // if (navbar) {
-    //   navbar.classList.toggle("active");
-    // }
   };
 
   // useEffect(() => {
-  //   console.log(open);
-  // }, [open]);
+  //   if (isAuthenticated && token) {
+  //     fetchInitiated.current = true;
+  //     fetchData(token);
+  //   }
+  // }, [isAuthenticated]);
+
+  const handleNavbar = () => {
+    setOpen(!open);
+  };
 
   return (
     <>
+      <Header />
       <NavBar mobileNav={open} />
-
-      <div className="mobile-header">
-        <img alt="logo" src="./logo512.png" />
-        <img alt="hamberger" src="./logo512.png" onClick={handleNavbar} />
-      </div>
-
       <div className="post-section">
         <div className="post-wrapper">
           <PostCard name="Eranda Madusanka" title="title" description="desc" />

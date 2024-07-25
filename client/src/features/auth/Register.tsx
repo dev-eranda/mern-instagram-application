@@ -5,8 +5,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { schema } from "./registrationSchema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useDispatch } from "react-redux";
-// import { login } from "../../slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
@@ -21,7 +19,6 @@ const Register: React.FC = () => {
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
-  //   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
@@ -40,7 +37,6 @@ const Register: React.FC = () => {
       if (result.error) {
         throw new Error(result.error);
       } else {
-        // dispatch(login({ isAuthenticate: true, user: result }));
         navigate("/login");
       }
     } catch (error) {

@@ -10,7 +10,7 @@
   } */
 }
 
-.mobile-header {
+/* .mobile-header {
   display: none;
   flex-direction: row;
   justify-content: space-between;
@@ -24,10 +24,12 @@
     height: 40px;
     cursor: pointer;
   }
-}
+} */
 
 .post-section {
   flex: 3;
+  /* position: inherit; */
+  /* padding-top: auto; */
 
   .post-wrapper {
     overflow: hidden;

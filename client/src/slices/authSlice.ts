@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../types";
 
 const authSlice = createSlice({
   name: "auth",
@@ -14,17 +13,23 @@ const authSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      state.isAuthenticated = action.payload.isAuthenticated;
-      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      state.token = action.payload.userObj.token;
       state.user = {
-        id: action.payload.user._id,
-        name: action.payload.user.name,
-        email: action.payload.user.email,
+        id: action.payload.userObj.user._id,
+        name: action.payload.userObj.user.name,
+        email: action.payload.userObj.user.email,
       };
     },
+
     logout: (state, action) => {
       state.isAuthenticated = false;
-      state.user = action.payload;
+      state.token = null;
+      state.user = {
+        id: null,
+        name: null,
+        email: null,
+      };
     },
   },
 });

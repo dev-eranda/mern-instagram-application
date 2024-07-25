@@ -38,12 +38,10 @@ const Login: React.FC = () => {
 
       const result = await response.json();
 
-      console.log(result);
       if (result.error) {
         throw new Error(result.error);
       } else {
-        localStorage.setItem("user", JSON.stringify(result));
-        dispatch(login({ isAuthenticate: true, user: result }));
+        dispatch(login({ userObj: result }));
         navigate("/post");
       }
     } catch (error) {

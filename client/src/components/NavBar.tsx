@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSidebar } from "../slices/globalSlice";
 import classNames from "classnames";
+import { RootState } from "../types";
 import "./NavBar.css";
 
 interface navbarProps {
@@ -7,14 +10,23 @@ interface navbarProps {
 }
 
 const NavBar: React.FC<navbarProps> = ({ mobileNav }) => {
+  const dispatch = useDispatch();
+  const { hamberger } = useSelector((state: RootState) => state.global);
+
+  const handleSidebar = () => {
+    dispatch(toggleSidebar(!hamberger));
+  };
+
   return (
-    <div id="navbar" className={`side-bar ${mobileNav ? "open" : "close"}`}>
+    <div id="navbar" className={`side-bar ${hamberger ? "open" : "close"}`}>
       <div className="user-section">
-        <img alt="avatar" src="./logo512.png" />
-        <div className="user-details">
+        <img alt="avatar" src="./burger-menu.svg" onClick={handleSidebar} />
+        <img alt="hamburger" src="./logo512.png" />
+
+        {/* <div className="user-details">
           <h2>Eranda Samarasinghe</h2>
           <span>online</span>
-        </div>
+        </div> */}
       </div>
       <hr />
       <div className="nav-menu">
@@ -23,8 +35,8 @@ const NavBar: React.FC<navbarProps> = ({ mobileNav }) => {
         <div className="nav-item">Settings</div>
       </div>
       <div className="log-out">
-        <span>logout</span>
-        <img className="log-out-icon" alt="avatar" src="./logo512.png" />
+        <span>Logout</span>
+        <img alt="avatar" src="./logout.svg" />
       </div>
     </div>
   );
