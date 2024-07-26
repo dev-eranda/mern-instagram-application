@@ -2,8 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../slices/globalSlice";
 import { RootState } from "../../types";
-import "./NavBar.css";
 import { Link, useLocation } from "react-router-dom";
+import "./Sidebar.css";
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();
