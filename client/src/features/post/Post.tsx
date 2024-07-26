@@ -1,22 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
 import { RootState } from "../../types";
 import Header from "../../components/Header/Header";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components//NavBar/NavBar";
+import { createPost } from "../../slices/postSlice";
 import "./Post.css";
 
 const Post = () => {
-  const [open, setOpen] = useState(false);
-
   const dispatch = useDispatch();
-  const fetchInitiated = useRef(false);
-
   const { isAuthenticated, token } = useSelector((state: RootState) => state.auth);
-  const { hamberger } = useSelector((state: RootState) => state.global);
-
-  // console.log(hamberger);
-  // console.log(isAuthenticated);
+  const { post } = useSelector((state: RootState) => state.post);
 
   const fetchData = async (token: string) => {
     try {
@@ -33,32 +27,27 @@ const Post = () => {
       }
 
       const data = await response.json();
-      // console.log(data);
+      dispatch(createPost(data));
     } catch (error) {
-      console.error("Error", error);
+      console.error("Error fetching posts:", error);
     }
   };
 
-  // useEffect(() => {
-  //   if (isAuthenticated && token) {
-  //     fetchInitiated.current = true;
-  //     fetchData(token);
-  //   }
-  // }, [isAuthenticated]);
-
-  const handleNavbar = () => {
-    setOpen(!open);
-  };
-
+  useEffect(() => {
+    if (isAuthenticated && token) {
+      fetchData(token);
+    }
+  }, [isAuthenticated, token]);
   return (
     <>
       <Header />
-      <NavBar mobileNav={open} />
+      <NavBar />
       <div className="post-section">
-        <div className="post-wrapper">
-          <PostCard name="Eranda Madusanka" title="title" description="desc" />
-          <PostCard name="Eranda Madusanka" title="title" description="desc" />
-        </div>
+        {Array.isArray(post) && post.length > 0 ? (
+          post.map((post, index) => <PostCard post={post} />)
+        ) : (
+          <p>No posts available</p>
+        )}
       </div>
     </>
   );

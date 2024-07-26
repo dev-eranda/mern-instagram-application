@@ -203,3 +203,9 @@ body {
   padding-top: 10px;
   height: 1.2rem;
 }
+
+@media (max-width: 768px) {
+  .col-left {
+    display: none;
+  }
+}

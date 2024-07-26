@@ -6,10 +6,10 @@ import { RootState } from "../../types";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { hamberger } = useSelector((state: RootState) => state.global);
+  const { hamburger } = useSelector((state: RootState) => state.global);
 
   const handleHamberger = () => {
-    dispatch(toggleSidebar(!hamberger));
+    dispatch(toggleSidebar(!hamburger));
   };
 
   return (

@@ -6,12 +6,14 @@ import ProtectedRoute from "../routes/ProtectedRoutes";
 import Login from "../features/auth/Login";
 import Register from "../features/auth/Register";
 import Post from "../features/post/Post";
+import CreatePost from "../features/post/CreatePost";
 
 export default () => (
   <Routes>
     <Route path="/login" element={<PublicRoute element={<Login />} />} />
     <Route path="/register" element={<PublicRoute element={<Register />} />} />
     <Route path="/post" element={<ProtectedRoute element={<Post />} />} />
+    <Route path="/createpost" element={<ProtectedRoute element={<CreatePost />} />} />
   </Routes>
 );
 
