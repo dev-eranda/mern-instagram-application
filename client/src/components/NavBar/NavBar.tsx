@@ -20,7 +20,6 @@ const NavBar: React.FC = () => {
         <img alt="avatar" src="./burger-menu.svg" onClick={handleSidebar} />
         <img alt="hamburger" src="./logo512.png" />
       </div>
-      <hr />
       <div className="nav-menu">
         <Link to="/post" className={location.pathname === "/post" ? "selected" : ""}>
           Posts

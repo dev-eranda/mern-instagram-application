@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
 import { RootState } from "../../types";
-import Header from "../../components/Header/Header";
-import NavBar from "../../components//NavBar/NavBar";
 import { createPost } from "../../slices/postSlice";
 import "./Post.css";
+import Layout from "../../components/Layout/Layout";
 
 const Post = () => {
   const dispatch = useDispatch();
@@ -39,9 +38,7 @@ const Post = () => {
     }
   }, [isAuthenticated, token]);
   return (
-    <>
-      <Header />
-      <NavBar />
+    <Layout>
       <div className="post-section">
         {Array.isArray(post) && post.length > 0 ? (
           post.map((post, index) => <PostCard post={post} />)
@@ -49,7 +46,7 @@ const Post = () => {
           <p>No posts available</p>
         )}
       </div>
-    </>
+    </Layout>
   );
 };
 

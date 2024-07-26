@@ -1,0 +1,22 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
+.main-content {
+  margin-left: 200px;
+  margin-top: 60px;
+  padding: 20px;
+  flex-grow: 1;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0; /* Remove left margin on smaller screens */
+    margin-top: 60px; /* Ensure space for header */
+  }
+}
