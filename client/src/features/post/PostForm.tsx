@@ -7,34 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "../../types/post";
 import { useSelector } from "react-redux";
 import { RootState } from "../../types";
+import { Schema } from "./PostSchema";
 import z from "zod";
 
 import "./PostForm.css";
 
-const MAX_FILE_SIZE = 1024 * 1024 * 2;
-const ACCEPTED_IMAGE_MIME_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
-const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  file: z
-    .any()
-    .refine((file) => file && file.length > 0, "Document is required.")
-    .refine((file) => {
-      return file?.[0]?.size <= MAX_FILE_SIZE;
-    }, `Max document size is 2MB.`)
-    .refine(
-      (file) => ACCEPTED_IMAGE_MIME_TYPES.includes(file?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    ),
-});
-
-type FormFields = z.infer<typeof formSchema>;
+type FormFields = z.infer<typeof Schema>;
 type postFormProps = {
   post?: Post;
 };
@@ -54,7 +32,7 @@ const PostForm = ({ post }: postFormProps) => {
           file: post.photo,
         }
       : undefined,
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(Schema),
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const { token } = useSelector((state: RootState) => state.auth);

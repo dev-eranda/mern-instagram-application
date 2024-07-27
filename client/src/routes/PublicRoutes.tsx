@@ -8,13 +8,15 @@ interface PublicRouteProps {
 }
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ element }) => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const location = useLocation();
 
   if (isAuthenticated) {
     // const from = location.state?.from?.pathname || "/post";
     // return <Navigate to={from} replace />;
-    return <Navigate to="/post" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return element;

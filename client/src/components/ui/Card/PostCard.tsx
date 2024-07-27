@@ -9,9 +9,8 @@ type CardProps = {
 const PostCard: React.FC<CardProps> = ({ post }) => {
   return (
     <div key={post.title} className="card">
-      <h2>
-        @{post.postedBy?.name} | {post.title}
-      </h2>
+      <h2>@{post.postedBy?.name}</h2>
+      <span>{post.title}</span>
       <div className="photo-container">
         <img alt="photo" src={post.photo || "./logo512.png"} />
       </div>

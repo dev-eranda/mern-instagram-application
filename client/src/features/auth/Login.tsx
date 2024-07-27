@@ -42,7 +42,6 @@ const Login: React.FC = () => {
         throw new Error(result.error);
       } else {
         dispatch(login({ userObj: result }));
-        navigate("/");
       }
     } catch (error) {
       if (error instanceof Error) {
