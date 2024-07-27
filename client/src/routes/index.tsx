@@ -5,15 +5,15 @@ import ProtectedRoute from "../routes/ProtectedRoutes";
 
 import Login from "../features/auth/Login";
 import Register from "../features/auth/Register";
-import Post from "../features/post/Post";
-import CreatePost from "../features/post/CreatePost";
+import PostList from "../features/post/PostList";
+import PostForm from "../features/post/PostForm";
 
 export default () => (
   <Routes>
     <Route path="/login" element={<PublicRoute element={<Login />} />} />
     <Route path="/register" element={<PublicRoute element={<Register />} />} />
-    <Route path="/post" element={<ProtectedRoute element={<Post />} />} />
-    <Route path="/createpost" element={<ProtectedRoute element={<CreatePost />} />} />
+    <Route path="/" element={<ProtectedRoute element={<PostList />} />} />
+    <Route path="/post" element={<ProtectedRoute element={<PostForm />} />} />
   </Routes>
 );
 

@@ -34,6 +34,12 @@
   outline: none;
 }
 
+.file-input {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+}
+
 .input-error-container {
   height: 1rem;
 }

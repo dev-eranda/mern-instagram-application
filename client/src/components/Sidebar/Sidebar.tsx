@@ -21,10 +21,13 @@ const NavBar: React.FC = () => {
         <img alt="hamburger" src="./logo512.png" />
       </div>
       <div className="nav-menu">
-        <Link to="/post" className={location.pathname === "/post" ? "selected" : ""}>
+        <Link to="/" className={location.pathname === "/" ? "selected" : ""}>
           Posts
         </Link>
-        <Link to="/createpost" className={location.pathname === "/createpost" ? "selected" : ""}>
+        <Link
+          to="/post"
+          className={location.pathname === "/post" ? "selected" : ""}
+        >
           Create Post
         </Link>
       </div>

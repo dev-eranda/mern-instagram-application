@@ -42,7 +42,7 @@ const Login: React.FC = () => {
         throw new Error(result.error);
       } else {
         dispatch(login({ userObj: result }));
-        navigate("/post");
+        navigate("/");
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -60,9 +60,7 @@ const Login: React.FC = () => {
         <div className="row">
           <div className="col-left">
             <div className="hm-col-wrap">
-              <div className="hmlogo">
-                {/* <img src={logo} className="logo-white" alt="logo" /> */}
-              </div>
+              <div className="hmlogo"></div>
               <div className="login-title">
                 <h1>Members Login</h1>
               </div>
@@ -87,17 +85,22 @@ const Login: React.FC = () => {
                     register={register}
                     error={errors.password?.message}
                   />
-                  <Button disabled={isSubmitting}>{isSubmitting ? "Log in..." : "Log in"}</Button>
+                  <Button disabled={isSubmitting}>
+                    {isSubmitting ? "Log in..." : "Log in"}
+                  </Button>
                   <div className="root-error-container">
                     {errors.root?.message && (
-                      <span className="input-error">{errors.root?.message}</span>
+                      <span className="input-error">
+                        {errors.root?.message}
+                      </span>
                     )}
                   </div>
                 </form>
                 <hr className="seperator" />
                 <div className="no-account">
                   <p>
-                    Don't have an account ? Get your <a href="/register">Free account Now</a>
+                    Don't have an account ? Get your{" "}
+                    <a href="/register">Free account Now</a>
                   </p>
                 </div>
                 <div className="no-account">

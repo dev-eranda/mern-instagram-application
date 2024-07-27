@@ -4,7 +4,7 @@ import "./Input.css";
 
 interface InputProps {
   label: string;
-  type: any;
+  type: string;
   name: string;
   value?: any;
   error?: string;
@@ -29,12 +29,13 @@ const Input: React.FC<InputProps> = ({
         {label}
       </label>
       <input
-        className="input-control"
+        className={type === "file" ? "file-input" : "input-control"}
         {...register(name)}
         type={type}
         name={name}
         value={value}
         placeholder={placeholder}
+        accept={type === "file" ? ".jpg, .jpeg, .png" : undefined}
       />
       <div className="input-error-container">
         {error && <span className="input-error">{error}</span>}

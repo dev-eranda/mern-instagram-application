@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
 import { RootState } from "../../types";
 import { createPost } from "../../slices/postSlice";
-import "./Post.css";
 import Layout from "../../components/Layout/Layout";
+import "./PostList.css";
 
 const Post = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, token } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, token } = useSelector(
+    (state: RootState) => state.auth
+  );
   const { post } = useSelector((state: RootState) => state.post);
 
   const fetchData = async (token: string) => {
@@ -41,9 +43,9 @@ const Post = () => {
     <Layout>
       <div className="post-section">
         {Array.isArray(post) && post.length > 0 ? (
-          post.map((post, index) => <PostCard post={post} />)
+          post.map((post, index) => <PostCard key={index} post={post} />)
         ) : (
-          <p>No posts available</p>
+          <p>Loading...</p>
         )}
       </div>
     </Layout>
