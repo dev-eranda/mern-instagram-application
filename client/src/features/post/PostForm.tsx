@@ -5,9 +5,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "../../types/post";
-import { useSelector, UseSelector } from "react-redux";
-import z from "zod";
+import { useSelector } from "react-redux";
 import { RootState } from "../../types";
+import z from "zod";
+
+import "./PostForm.css";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 2;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -53,7 +55,7 @@ const PostForm = ({ post }: postFormProps) => {
       : undefined,
     resolver: zodResolver(formSchema),
   });
-  const [url, setUrl] = useState<string>("");
+  const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const { token } = useSelector((state: RootState) => state.auth);
 
   const postDetails = async (file: File): Promise<string> => {
@@ -82,24 +84,25 @@ const PostForm = ({ post }: postFormProps) => {
     const body = data.description;
     const file = data.file;
 
-    const imageUrl = await postDetails(file[0]);
-    setUrl(imageUrl);
-
     try {
-      const response = await fetch("/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title, body, image_url: url }),
-      });
+      const imageUrl = await postDetails(file[0]);
 
-      const result = await response.json();
-      if (result.error) {
-        throw new Error(result.error);
+      if (imageUrl) {
+        const response = await fetch("/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ title, body, image_url: imageUrl }),
+        });
+
+        const result = await response.json();
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        alert("success");
       }
-      alert("success");
     } catch (error) {
       if (error instanceof Error) {
         setError("root", {
@@ -109,39 +112,56 @@ const PostForm = ({ post }: postFormProps) => {
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <Layout>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Title"
-          name="title"
-          type="text"
-          register={register}
-          error={errors.title?.message}
-        />
-        <Input
-          label="Description"
-          name="description"
-          type="text"
-          register={register}
-          error={errors.description?.message}
-        />
-        <Input
-          label="Image"
-          name="file"
-          type="file"
-          register={register}
-          error={errors.file?.message?.toString()}
-        />
-        <Button disabled={isSubmitting}>
-          {isSubmitting ? "Posting..." : "Post"}
-        </Button>
-        <div className="root-error-container">
-          {errors.root?.message && (
-            <span className="input-error">{errors.root?.message}</span>
-          )}
-        </div>
-      </form>
+      <div className="post-form-container">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            label="Title"
+            name="title"
+            type="text"
+            register={register}
+            error={errors.title?.message}
+          />
+          <Input
+            label="Description"
+            name="description"
+            type="text"
+            register={register}
+            error={errors.description?.message}
+          />
+          <Input
+            label="Image"
+            name="file"
+            type="file"
+            register={register}
+            error={errors.file?.message?.toString()}
+            onChange={handleFileChange}
+          />
+          <div className="image-container">
+            {image && <img src={image as string} alt="Selected" />}
+          </div>
+          <Button disabled={isSubmitting}>
+            {isSubmitting ? "Posting..." : "Post"}
+          </Button>
+          <div className="root-error-container">
+            {errors.root?.message && (
+              <span className="input-error">{errors.root?.message}</span>
+            )}
+          </div>
+        </form>
+      </div>
     </Layout>
   );
 };

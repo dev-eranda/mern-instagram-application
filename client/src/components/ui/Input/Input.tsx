@@ -11,6 +11,7 @@ interface InputProps {
   register: any;
   placeholder?: string;
   className?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,6 +23,7 @@ const Input: React.FC<InputProps> = ({
   error,
   register,
   className,
+  onChange,
 }) => {
   return (
     <div className={classNames("input-container", className)}>
@@ -36,6 +38,7 @@ const Input: React.FC<InputProps> = ({
         value={value}
         placeholder={placeholder}
         accept={type === "file" ? ".jpg, .jpeg, .png" : undefined}
+        onChange={onChange}
       />
       <div className="input-error-container">
         {error && <span className="input-error">{error}</span>}
