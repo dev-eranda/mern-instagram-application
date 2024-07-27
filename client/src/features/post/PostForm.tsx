@@ -44,6 +44,7 @@ const PostForm = ({ post }: postFormProps) => {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     defaultValues: post
@@ -102,6 +103,10 @@ const PostForm = ({ post }: postFormProps) => {
           throw new Error(result.error);
         }
         alert("success");
+
+        // Clear the form values
+        reset();
+        setImage(null);
       }
     } catch (error) {
       if (error instanceof Error) {
