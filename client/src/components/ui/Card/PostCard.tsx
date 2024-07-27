@@ -10,7 +10,9 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   return (
     <div key={post.title} className="card">
       <h2>@{post.postedBy?.name}</h2>
-      <span>{post.title}</span>
+      <div className="post-title">
+        <span>{post.title}</span>
+      </div>
       <div className="photo-container">
         <img alt="photo" src={post.photo || "./logo512.png"} />
       </div>
@@ -26,7 +28,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             <span key={index}>{post.likes.length} likes</span>
           ))
         ) : (
-          <span>0 likes</span>
+          <span>0 like</span>
         )}
       </div>
       <p>{post.body}</p>

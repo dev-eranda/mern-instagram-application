@@ -12,11 +12,11 @@
     text-transform: capitalize;
     margin: 0;
     margin-bottom: 5px;
-    padding: 0px 5px;
     font-size: 16px;
+    padding: 0px 3px;
   }
 
-  span {
+  .post-title {
     text-transform: capitalize;
     font-size: 14px;
     margin-bottom: 5px;
@@ -56,10 +56,6 @@
   .likes-count {
     padding: 0px 5px;
     margin-bottom: 5px;
-
-    span {
-      font-size: 14px;
-    }
   }
 
   p {
@@ -119,6 +115,7 @@
 
       input {
         width: 90%;
+        height: 10px;
       }
 
       img {
