@@ -50,3 +50,7 @@
     flex-direction: column;
     width: 100%;
 }
+
+.dropdown-items a:hover {
+    background-color: #dbdbdb;
+}
