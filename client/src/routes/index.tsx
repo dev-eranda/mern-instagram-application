@@ -7,6 +7,7 @@ import Login from "../features/auth/Login";
 import Register from "../features/auth/Register";
 import PostList from "../features/post/PostList";
 import PostForm from "../features/post/PostForm";
+import Profile from "../features/profile/Profile";
 
 export default () => (
   <Routes>
@@ -14,12 +15,6 @@ export default () => (
     <Route path="/register" element={<PublicRoute element={<Register />} />} />
     <Route path="/" element={<ProtectedRoute element={<PostList />} />} />
     <Route path="/post" element={<ProtectedRoute element={<PostForm />} />} />
+    <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
   </Routes>
 );
-
-// <BrowserRouter basename="/annex">
-//   <Route path="/" exact component={View} />
-//   <Route path="/login" exact component={Login} />
-//   <Route path="/register" exact component={ClientRegister} />
-//   <Route path="/dashboard" exact component={Dashboard} />
-// </BrowserRouter>

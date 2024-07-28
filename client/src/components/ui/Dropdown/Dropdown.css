@@ -51,12 +51,12 @@
     width: 100%;
 }
 
-.item {
+/* .item {
     cursor: pointer;
     padding: 10px 20px;
     width: -webkit-fill-available;
-}
+} */
 
-.item:hover {
+/* .item:hover {
     background-color: #dbdbdb;
-}
+} */

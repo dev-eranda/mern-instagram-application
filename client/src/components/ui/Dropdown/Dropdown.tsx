@@ -1,11 +1,14 @@
 import React from "react";
 import "./Dropdown.css";
+import { Link, useLocation } from "react-router-dom";
 
 interface dropdownProps {
   isOpen: boolean;
 }
 
 const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
+  const location = useLocation();
+
   return (
     <>
       {isOpen && (
@@ -18,9 +21,9 @@ const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
             </div>
           </div>
           <div className="dropdown-items">
-            <div className="item">Profile</div>
-            <div className="item">Settings</div>
-            <div className="item">Log out</div>
+            <Link to="/profile">Profile</Link>
+            <Link to="/settings">Settings</Link>
+            <Link to="/logout">Log out</Link>
           </div>
         </div>
       )}

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const globalSlice = createSlice({
   name: "global",
   initialState: {
-    hamburger: true,
+    hamburger: false,
   },
   reducers: {
     toggleSidebar: (state, action) => {
