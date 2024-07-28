@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootTypes } from "../../types";
 import { createPost } from "../../slices/postSlice";
@@ -10,7 +10,7 @@ const Profile = () => {
   const { token } = useSelector((state: RootTypes) => state.auth);
   const { post } = useSelector((state: RootTypes) => state.post);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch("/post/my", {
         method: "GET",
@@ -31,11 +31,11 @@ const Profile = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [token, dispatch]);
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   return (
     <Layout>
@@ -53,8 +53,8 @@ const Profile = () => {
         </div>
         <div className="post-wrapper">
           {Array.isArray(post) && post.length > 0 ? (
-            post.map((post) => (
-              <div className="post-item">
+            post.map((post, index) => (
+              <div key={index} className="post-item">
                 <img alt="post" src={post.photo} />
                 <span className="post-title">{post?.title}</span>
               </div>
