@@ -34,11 +34,6 @@
   }
 }
 
-/* @media (max-height: 600px) {
-  .side-bar {
-    height: 100%; 
-  } */
-
 .nav-menu {
   padding-top: 10px;
   display: flex;
