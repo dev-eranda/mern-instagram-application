@@ -14,11 +14,11 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.isAuthenticated = true;
-      state.token = action.payload.userObj.token;
+      state.token = action.payload.token;
       state.user = {
-        id: action.payload.userObj.user._id,
-        name: action.payload.userObj.user.name,
-        email: action.payload.userObj.user.email,
+        id: action.payload.user._id,
+        name: action.payload.user.name,
+        email: action.payload.user.email,
       };
     },
 

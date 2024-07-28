@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logout } from "../../../slices/authSlice";
+import useAuth from "../../../hooks/useAuth";
 import "./Dropdown.css";
 
 interface dropdownProps {
@@ -9,9 +8,9 @@ interface dropdownProps {
 }
 
 const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
-  const dispatch = useDispatch();
+  const { logout } = useAuth();
   const handleLogout = () => {
-    dispatch(logout(null));
+    logout();
   };
 
   return (
