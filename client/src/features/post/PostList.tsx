@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
-import { RootState } from "../../types";
+import { RootTypes } from "../../types";
 import { createPost } from "../../slices/postSlice";
 import Layout from "../../components/Layout/Layout";
 import "./PostList.css";
@@ -9,9 +9,9 @@ import "./PostList.css";
 const Post = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, token } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootTypes) => state.auth
   );
-  const { post } = useSelector((state: RootState) => state.post);
+  const { post } = useSelector((state: RootTypes) => state.post);
 
   const fetchData = async (token: string) => {
     try {

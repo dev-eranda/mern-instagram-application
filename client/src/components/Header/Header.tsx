@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toggleSidebar } from "../../slices/globalSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../types";
+import { RootTypes } from "../../types";
 import { Dropdown } from "../ui/Dropdown";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import "./Header.css";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { hamburger } = useSelector((state: RootState) => state.global);
+  const { hamburger } = useSelector((state: RootTypes) => state.global);
   const toggleRef = useRef<HTMLImageElement>(null);
   const {
     ref: dropdownRef,

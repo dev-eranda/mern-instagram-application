@@ -1,13 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../slices/authSlice";
 import "./Dropdown.css";
-import { Link, useLocation } from "react-router-dom";
 
 interface dropdownProps {
   isOpen: boolean;
 }
 
 const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
-  const location = useLocation();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout(null));
+  };
 
   return (
     <>
@@ -22,8 +27,9 @@ const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
           </div>
           <div className="dropdown-items">
             <Link to="/profile">Profile</Link>
-            {/* <Link to="">Settings</Link> */}
-            <Link to="/logout">Log out</Link>
+            <Link to="" onClick={handleLogout}>
+              Log out
+            </Link>
           </div>
         </div>
       )}

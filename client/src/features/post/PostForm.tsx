@@ -6,7 +6,7 @@ import { Button } from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "../../types/post";
 import { useSelector } from "react-redux";
-import { RootState } from "../../types";
+import { RootTypes } from "../../types";
 import { Schema } from "./PostSchema";
 import z from "zod";
 
@@ -35,7 +35,7 @@ const PostForm = ({ post }: postFormProps) => {
     resolver: zodResolver(Schema),
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { token } = useSelector((state: RootTypes) => state.auth);
 
   const postDetails = async (file: File): Promise<string> => {
     const data = new FormData();

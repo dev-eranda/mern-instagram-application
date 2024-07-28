@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../types";
+import { RootTypes } from "../../types";
 import { createPost } from "../../slices/postSlice";
 import Layout from "../../components/Layout/Layout";
 import "./Profile.css";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state: RootState) => state.auth);
-  const { post } = useSelector((state: RootState) => state.post);
+  const { token } = useSelector((state: RootTypes) => state.auth);
+  const { post } = useSelector((state: RootTypes) => state.post);
 
   const fetchPosts = async () => {
     try {

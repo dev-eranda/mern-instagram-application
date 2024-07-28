@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../slices/globalSlice";
-import { RootState } from "../../types";
+import { RootTypes } from "../../types";
 import { Link, useLocation } from "react-router-dom";
 import "./Sidebar.css";
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();
-  const { hamburger } = useSelector((state: RootState) => state.global);
+  const { hamburger } = useSelector((state: RootTypes) => state.global);
   const location = useLocation();
 
   const handleSidebar = () => {

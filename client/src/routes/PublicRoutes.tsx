@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { RootTypes } from "../types";
 
 interface PublicRouteProps {
   element: React.ReactElement;
@@ -9,7 +9,7 @@ interface PublicRouteProps {
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ element }) => {
   const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
+    (state: RootTypes) => state.auth.isAuthenticated
   );
   const location = useLocation();
 
