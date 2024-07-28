@@ -42,6 +42,14 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-wrapper">
           <img alt="avatar" src="./avatar.svg" />
+          <div className="profile-user-details">
+            <span className="profile-user-name">Eranda Madusanka</span>
+            <div className="followers">
+              <p>Post 86</p>
+              <p>Followers 100</p>
+              <p>Followings 100</p>
+            </div>
+          </div>
         </div>
         <div className="post-wrapper">
           {Array.isArray(post) && post.length > 0 ? (

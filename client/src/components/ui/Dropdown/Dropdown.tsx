@@ -22,7 +22,7 @@ const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
           </div>
           <div className="dropdown-items">
             <Link to="/profile">Profile</Link>
-            <Link to="/settings">Settings</Link>
+            {/* <Link to="">Settings</Link> */}
             <Link to="/logout">Log out</Link>
           </div>
         </div>
