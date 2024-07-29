@@ -27,7 +27,7 @@ export const likeAsync = createAsyncThunk(
       throw new Error("Network response was not ok");
     }
 
-    return (await response.json()) as Post;
+    return await response.json();
   }
 );
 
@@ -47,7 +47,7 @@ export const unlikeAsync = createAsyncThunk(
       throw new Error("Network response was not ok");
     }
 
-    return (await response.json()) as Post;
+    return await response.json();
   }
 );
 
