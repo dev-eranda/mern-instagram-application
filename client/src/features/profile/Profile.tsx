@@ -7,7 +7,7 @@ import "./Profile.css";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state: RootTypes) => state.auth);
+  const { user, token } = useSelector((state: RootTypes) => state.auth);
   const { post } = useSelector((state: RootTypes) => state.post);
 
   const fetchPosts = useCallback(async () => {
@@ -43,7 +43,7 @@ const Profile = () => {
         <div className="profile-wrapper">
           <img alt="avatar" src="./avatar.svg" />
           <div className="profile-user-details">
-            <span className="profile-user-name">Eranda Madusanka</span>
+            <span className="profile-user-name">{user?.name}</span>
             <div className="followers">
               <p>Post 86</p>
               <p>Followers 100</p>
@@ -60,7 +60,7 @@ const Profile = () => {
               </div>
             ))
           ) : (
-            <p>Loading...</p>
+            <p>No post available...</p>
           )}
         </div>
       </div>

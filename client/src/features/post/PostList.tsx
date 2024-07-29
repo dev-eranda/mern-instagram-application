@@ -5,11 +5,12 @@ import { RootTypes } from "../../types";
 import { createPost } from "../../slices/postSlice";
 import Layout from "../../components/Layout/Layout";
 import "./PostList.css";
+import { RootState } from "../../store";
 
 const Post = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootTypes) => state.auth);
-  const { post } = useSelector((state: RootTypes) => state.post);
+  const { post, loading } = useSelector((state: RootState) => state.post);
 
   const fetchData = async (token: string) => {
     try {
@@ -44,7 +45,7 @@ const Post = () => {
         {Array.isArray(post) && post.length > 0 ? (
           post.map((post, index) => <PostCard key={index} post={post} />)
         ) : (
-          <p>Loading...</p>
+          <p>No post available...</p>
         )}
       </div>
     </Layout>

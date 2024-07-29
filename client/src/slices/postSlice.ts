@@ -3,10 +3,12 @@ import { Post } from "../types/post";
 
 interface PostState {
   post: Post[];
+  loading: boolean;
 }
 
 const initialState: PostState = {
   post: [],
+  loading: false,
 };
 
 export const likeAsync = createAsyncThunk(
@@ -59,8 +61,9 @@ const postSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(likeAsync.pending, () => {
+      .addCase(likeAsync.pending, (state) => {
         console.log("likeAsync.pending");
+        state.loading = true;
       })
       .addCase(likeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
@@ -68,6 +71,7 @@ const postSlice = createSlice({
             ? { ...post, ...action.payload }
             : post
         );
+        state.loading = false;
       })
       .addCase(unlikeAsync.pending, () => {
         console.log("unlikeAsync.pending");

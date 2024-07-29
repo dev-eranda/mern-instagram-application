@@ -41,11 +41,11 @@
   flex: 1;
 }
 
-a.selected {
+.side-bar a.selected {
   background-color: #dbdbdb;
 }
 
-a {
+.side-bar a {
   margin-bottom: 5px;
   background-color: white;
   color: black;
