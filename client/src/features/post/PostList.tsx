@@ -8,9 +8,7 @@ import "./PostList.css";
 
 const Post = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, token } = useSelector(
-    (state: RootTypes) => state.auth
-  );
+  const { token } = useSelector((state: RootTypes) => state.auth);
   const { post } = useSelector((state: RootTypes) => state.post);
 
   const fetchData = async (token: string) => {
@@ -35,10 +33,11 @@ const Post = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated && token) {
+    if (token) {
       fetchData(token);
     }
-  }, [isAuthenticated, token]);
+  }, [token]);
+
   return (
     <Layout>
       <div className="post-section">

@@ -1,24 +1,21 @@
-export interface Comments {
-  _id: string;
-  text: string;
-  commentedBy: {
-    _id: string;
-    name: string;
-  };
-}
-
-export interface PostedBy {
-  id: string;
-  name: string;
-}
-
 export interface Post {
+  _id: string;
   title: string;
   body: string;
-  comments: Comments[];
-  likes: any[];
-  photo: string;
-  postedBy: PostedBy | null;
+  photo?: string;
+  postedBy: {
+    id: string;
+    name: string;
+  };
+  likes?: string[];
+  comments?: {
+    commentedBy: {
+      _id: string;
+      name: string;
+    };
+    _id: string;
+    text: string;
+  }[];
 }
 
 export interface PostState {

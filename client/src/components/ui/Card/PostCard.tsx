@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Post } from "../../../types/post";
+import { RootTypes } from "../../../types";
+import { useDispatch, useSelector } from "react-redux";
+import { likeAsync, unlikeAsync } from "../../../slices/postSlice";
+import { AppDispatch } from "../../../store";
 import "./Card.css";
 
 type CardProps = {
@@ -7,6 +11,31 @@ type CardProps = {
 };
 
 const PostCard: React.FC<CardProps> = ({ post }) => {
+  const { user, token } = useSelector((state: RootTypes) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [likes, setLikes] = useState(post.likes || []);
+
+  const handleLike = async (postId: string, token: string) => {
+    try {
+      setLikes([...likes, user?.id ?? ""]);
+      await dispatch(likeAsync({ postId, token }));
+    } catch (error) {
+      console.log(error);
+      setLikes(likes.filter((id) => id !== user?.id));
+    }
+  };
+
+  const handleUnlike = async (postId: string, token: string) => {
+    try {
+      setLikes(likes.filter((id) => id !== user?.id));
+      dispatch(unlikeAsync({ postId, token }));
+    } catch (error) {
+      console.log(error);
+      setLikes([...likes, user?.id ?? ""]);
+    }
+  };
+
   return (
     <div key={post.title} className="card">
       <h2>@{post.postedBy?.name}</h2>
@@ -17,16 +46,27 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         <img alt="photo" src={post.photo || "./logo512.png"} />
       </div>
       <div className="action-container">
-        <img alt="save" src="./heart-fill.svg" />
-        {/* <img alt="save" src="./comment.svg" /> */}
-        {/* <img alt="save" src="./share.svg" /> */}
-        {/* <img className="save-icon" alt="like" src="./bookmark.svg" /> */}
+        {likes?.includes(user?.id ?? "") ? (
+          <img
+            alt="save"
+            src="./heart-fill.svg"
+            onClick={() => {
+              handleUnlike(post._id, token);
+            }}
+          />
+        ) : (
+          <img
+            alt="save"
+            src="./heart.svg"
+            onClick={() => {
+              handleLike(post._id, token);
+            }}
+          />
+        )}
       </div>
       <div className="likes-count">
-        {post.likes && post.likes.length > 0 ? (
-          post.likes?.map((count, index) => (
-            <span key={index}>{post.likes.length} likes</span>
-          ))
+        {likes && likes.length > 0 ? (
+          <span>{likes.length} likes</span>
         ) : (
           <span>0 like</span>
         )}
@@ -38,7 +78,9 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             <div key={index} className="comment-details">
               <img alt="like" src="./avatar-boy.svg" />
               <div className="user-wrapper">
-                <span className="coment-owner">{comment.commentedBy.name}</span>
+                <span className="comment-owner">
+                  {comment.commentedBy.name}
+                </span>
                 <span className="comment">{comment.text}</span>
               </div>
             </div>
