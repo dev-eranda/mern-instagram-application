@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Post } from "../../../types/post";
+import { Post, PostState } from "../../../types/post";
 import { RootTypes } from "../../../types";
 import { useDispatch, useSelector } from "react-redux";
-import { likeAsync, unlikeAsync } from "../../../slices/postSlice";
+import {
+  commentAsync,
+  likeAsync,
+  unlikeAsync,
+} from "../../../slices/postSlice";
 import { AppDispatch } from "../../../store";
 import "./Card.css";
 
@@ -15,6 +19,8 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [likes, setLikes] = useState(post.likes || []);
+  const [comments, setComments] = useState(post.comments || []);
+  const [text, setText] = useState("");
 
   const handleLike = async (postId: string, token: string) => {
     try {
@@ -33,6 +39,21 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
     } catch (error) {
       console.log(error);
       setLikes([...likes, user?.id ?? ""]);
+    }
+  };
+
+  const handleComment = async (postId: string, token: string, text: string) => {
+    try {
+      const resultAction = await dispatch(
+        commentAsync({ postId, token, text })
+      );
+      if (commentAsync.fulfilled.match(resultAction)) {
+        const comments = resultAction.payload;
+        setComments(comments.post.comments || []);
+        setText("");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -73,8 +94,8 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
       </div>
       <p>{post.body}</p>
       <div className="comments">
-        {post.comments && post.comments.length > 0 ? (
-          post.comments.map((comment, index) => (
+        {comments && comments.length > 0 ? (
+          comments.map((comment, index) => (
             <div key={index} className="comment-details">
               <img alt="like" src="./avatar-boy.svg" />
               <div className="user-wrapper">
@@ -93,8 +114,19 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             className="comment-input"
             type="text"
             placeholder="add a comment..."
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
           />
-          <img alt="like" src="./send.svg" />
+
+          <img
+            alt="like"
+            src="./send.svg"
+            onClick={() => {
+              handleComment(post._id, token, text);
+            }}
+          />
         </div>
       </div>
     </div>

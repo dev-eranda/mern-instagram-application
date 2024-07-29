@@ -19,6 +19,5 @@ export interface Post {
 }
 
 export interface PostState {
-  post: Post | null;
   post: Post[];
 }
