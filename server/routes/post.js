@@ -135,8 +135,6 @@ router.put('/post/unlike', requireLogin, async (req, res) => {
             { $pull: { likes: _id } },
             { new: true })
 
-        console.log(post)
-
         if (!post) {
             return res.status(404).json({ error: "Post not found" })
         }
