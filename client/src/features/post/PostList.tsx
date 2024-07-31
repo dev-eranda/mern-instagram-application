@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
-// import { RootTypes } from "../../types";
 import { createPost } from "../../slices/postSlice";
 import { RootState } from "../../store";
 import Layout from "../../components/Layout/Layout";
@@ -24,13 +23,13 @@ const Post = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Layout>
       <div className="post-section">
-        {Array.isArray(post) && post.length > 0 ? (
-          post.map((post, index) => <PostCard key={index} post={post} />)
+        {post && post.length > 0 ? (
+          post.map((post) => <PostCard key={post._id} post={post} />)
         ) : (
           <p>No post available...</p>
         )}
