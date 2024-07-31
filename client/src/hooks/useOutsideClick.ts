@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const useOutsideClick = (
-  initialIsVisible: boolean,
-  toggleRef: React.RefObject<HTMLElement>
-) => {
+const useOutsideClick = (initialIsVisible: boolean, toggleRef: React.RefObject<HTMLElement>) => {
   const [isVisible, setIsVisible] = useState(initialIsVisible);
   const ref = useRef<HTMLDivElement>(null);
 

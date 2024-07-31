@@ -86,22 +86,17 @@ const Login: React.FC = () => {
                     register={register}
                     error={errors.password?.message}
                   />
-                  <Button disabled={isSubmitting}>
-                    {isSubmitting ? "Log in..." : "Log in"}
-                  </Button>
+                  <Button disabled={isSubmitting}>{isSubmitting ? "Log in..." : "Log in"}</Button>
                   <div className="root-error-container">
                     {errors.root?.message && (
-                      <span className="input-error">
-                        {errors.root?.message}
-                      </span>
+                      <span className="input-error">{errors.root?.message}</span>
                     )}
                   </div>
                 </form>
                 <hr className="seperator" />
                 <div className="no-account">
                   <p>
-                    Don't have an account ? Get your{" "}
-                    <a href="/register">Free account Now</a>
+                    Don't have an account ? Get your <a href="/register">Free account Now</a>
                   </p>
                 </div>
                 <div className="no-account">

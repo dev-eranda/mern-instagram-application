@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Post } from "../../../types/post";
 import { RootTypes } from "../../../types";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  commentAsync,
-  likeAsync,
-  unlikeAsync,
-} from "../../../slices/postSlice";
+import { commentAsync, likeAsync, unlikeAsync } from "../../../slices/postSlice";
 import { AppDispatch } from "../../../store";
 import "./Card.css";
 
@@ -25,7 +21,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const handleLike = async (postId: string, token: string) => {
     try {
       setLikes([...likes, user?.id ?? ""]);
-      await dispatch(likeAsync({ postId, token }));
+      dispatch(likeAsync({ postId, token }));
     } catch (error) {
       console.log(error);
       setLikes(likes.filter((id) => id !== user?.id));
@@ -44,9 +40,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
 
   const handleComment = async (postId: string, token: string, text: string) => {
     try {
-      const resultAction = await dispatch(
-        commentAsync({ postId, token, text })
-      );
+      const resultAction = await dispatch(commentAsync({ postId, token, text }));
       if (commentAsync.fulfilled.match(resultAction)) {
         const comments = resultAction.payload;
         setComments(comments.post.comments || []);
@@ -86,11 +80,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         )}
       </div>
       <div className="likes-count">
-        {likes && likes.length > 0 ? (
-          <span>{likes.length} likes</span>
-        ) : (
-          <span>0 like</span>
-        )}
+        {likes && likes.length > 0 ? <span>{likes.length} likes</span> : <span>0 like</span>}
       </div>
       <p>{post.body}</p>
       <div className="comments">
@@ -99,9 +89,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             <div key={index} className="comment-details">
               <img alt="like" src="./avatar-boy.svg" />
               <div className="user-wrapper">
-                <span className="comment-owner">
-                  {comment.commentedBy.name}
-                </span>
+                <span className="comment-owner">{comment.commentedBy.name}</span>
                 <span className="comment">{comment.text}</span>
               </div>
             </div>

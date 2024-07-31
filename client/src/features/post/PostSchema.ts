@@ -1,12 +1,7 @@
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 2;
-const ACCEPTED_IMAGE_MIME_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 export const Schema = z.object({
   title: z
@@ -25,6 +20,6 @@ export const Schema = z.object({
     }, `Max document size is 2MB.`)
     .refine(
       (file) => ACCEPTED_IMAGE_MIME_TYPES.includes(file?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
+      "Only .jpg, .jpeg, .png and .webp formats are supported.",
     ),
 });

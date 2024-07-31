@@ -28,22 +28,13 @@ const Header = () => {
     <>
       <div className="header-container">
         <div className="header-left">
-          <img
-            alt="hamburger"
-            src="./burger-menu.svg"
-            onClick={handleHamberger}
-          />
+          <img alt="hamburger" src="./burger-menu.svg" onClick={handleHamberger} />
           <img alt="hamburger" src="./logo512.png" />
         </div>
         <div className="header-center"></div>
         <div className="header-right">
           <img alt="notification" src="./bell.svg" />
-          <img
-            alt="profile"
-            src="./avatar.svg"
-            onClick={handleMenu}
-            ref={toggleRef}
-          />
+          <img alt="profile" src="./avatar.svg" onClick={handleMenu} ref={toggleRef} />
           <div ref={dropdownRef} className="menu-position">
             <Dropdown isOpen={isOpen} />
           </div>

@@ -24,10 +24,7 @@ const NavBar: React.FC = () => {
         <Link to="/" className={location.pathname === "/" ? "selected" : ""}>
           Posts
         </Link>
-        <Link
-          to="/post"
-          className={location.pathname === "/post" ? "selected" : ""}
-        >
+        <Link to="/post" className={location.pathname === "/post" ? "selected" : ""}>
           Create Post
         </Link>
       </div>

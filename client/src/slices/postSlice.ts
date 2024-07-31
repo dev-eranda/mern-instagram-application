@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../types/post";
+import axiosInstance from "../axios/axiosInstance ";
 
 interface PostState {
   post: Post[];
@@ -28,7 +29,7 @@ export const likeAsync = createAsyncThunk(
     }
 
     return await response.json();
-  }
+  },
 );
 
 export const unlikeAsync = createAsyncThunk(
@@ -48,80 +49,70 @@ export const unlikeAsync = createAsyncThunk(
     }
 
     return await response.json();
-  }
+  },
 );
 
 export const commentAsync = createAsyncThunk(
   "post/commentAsync",
-  async ({
-    postId,
-    token,
-    text,
-  }: {
-    postId: string;
-    token: string;
-    text: string;
-  }) => {
-    const response = await fetch("/post/comment", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+  async ({ postId, token, text }: { postId: string; token: string; text: string }) => {
+    const response = await axiosInstance.put("/post/comment", {
       body: JSON.stringify({ postId, text }),
     });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
 
-    return await response.json();
-  }
+    return response.data;
+  },
 );
+
+export const getPostsAsync = createAsyncThunk("post/getPostAsync", async () => {
+  const response = await axiosInstance.get("/post");
+  return response.data;
+});
 
 const postSlice = createSlice({
   name: "post",
   initialState,
-  reducers: {
-    createPost: (state, action) => {
-      state.post = action.payload.post;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getPostsAsync.pending, (state) => {
+        console.log("getPostsAsync.pending");
+        state.loading = true;
+      })
+      .addCase(getPostsAsync.fulfilled, (state, action) => {
+        state.post = action.payload.post;
+        state.loading = false;
+      })
+
       .addCase(likeAsync.pending, (state) => {
         console.log("likeAsync.pending");
         state.loading = true;
       })
       .addCase(likeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id
-            ? { ...post, ...action.payload }
-            : post
+          post._id === action.payload._id ? { ...post, ...action.payload } : post,
         );
         state.loading = false;
       })
+
       .addCase(unlikeAsync.pending, () => {
         console.log("unlikeAsync.pending");
       })
       .addCase(unlikeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id
-            ? { ...post, ...action.payload }
-            : post
+          post._id === action.payload._id ? { ...post, ...action.payload } : post,
         );
       })
+
       .addCase(commentAsync.pending, () => {
         console.log("commentAsync.pending");
       })
       .addCase(commentAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id
-            ? { ...post, ...action.payload }
-            : post
+          post._id === action.payload._id ? { ...post, ...action.payload } : post,
         );
       });
   },
 });
 
-export const { createPost } = postSlice.actions;
+export const {} = postSlice.actions;
 export default postSlice.reducer;

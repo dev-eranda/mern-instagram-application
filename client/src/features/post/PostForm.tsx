@@ -43,13 +43,10 @@ const PostForm = ({ post }: postFormProps) => {
     data.append("upload_preset", "insta-clone");
     data.append("cloud_name", "dgbgvecx3");
 
-    const response = await fetch(
-      "https://api.cloudinary.com/v1_1/dgbgvecx3/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-    );
+    const response = await fetch("https://api.cloudinary.com/v1_1/dgbgvecx3/image/upload", {
+      method: "POST",
+      body: data,
+    });
 
     const result = await response.json();
     if (result.error) {
@@ -135,13 +132,9 @@ const PostForm = ({ post }: postFormProps) => {
           <div className="image-container">
             {image && <img src={image as string} alt="Selected" />}
           </div>
-          <Button disabled={isSubmitting}>
-            {isSubmitting ? "Posting..." : "Post"}
-          </Button>
+          <Button disabled={isSubmitting}>{isSubmitting ? "Posting..." : "Post"}</Button>
           <div className="root-error-container">
-            {errors.root?.message && (
-              <span className="input-error">{errors.root?.message}</span>
-            )}
+            {errors.root?.message && <span className="input-error">{errors.root?.message}</span>}
           </div>
         </form>
       </div>
