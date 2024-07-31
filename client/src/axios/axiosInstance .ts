@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 // Function to refresh the token
@@ -30,7 +30,6 @@ const refreshAuthToken = async () => {
       const { accessToken, refreshToken: newRefreshToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
-      console.log("hhoo");
       return accessToken;
     } catch (error) {
       console.error("Failed to refresh token", error);
@@ -92,7 +91,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  },
+  }
 );
 
 export default axiosInstance;

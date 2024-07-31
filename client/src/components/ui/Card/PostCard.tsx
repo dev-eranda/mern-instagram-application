@@ -18,6 +18,9 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const [comments, setComments] = useState(post.comments || []);
   const [text, setText] = useState("");
 
+  console.log(likes);
+  console.log(user);
+
   const handleLike = async (postId: string) => {
     try {
       setLikes([...likes, user?.id ?? ""]);
@@ -61,7 +64,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         <img alt="photo" src={post.photo || "./logo512.png"} />
       </div>
       <div className="action-container">
-        {likes?.includes(user?.id ?? "") ? (
+        {likes.includes(user?.id ?? "") ? (
           <img
             alt="save"
             src="./heart-fill.svg"
