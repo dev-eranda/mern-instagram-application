@@ -3,7 +3,7 @@ import "./Button.css";
 
 interface ButtonProps {
   disabled: boolean;
-  children: any;
+  children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({ disabled, children }) => {

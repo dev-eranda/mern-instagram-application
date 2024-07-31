@@ -1,6 +1,5 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 
 const axiosInstance = axios.create({
   baseURL: "http://192.168.8.124:5000",
@@ -52,13 +51,13 @@ const isTokenExpired = (token: string | null) => {
 
 // Token refresh queue to prevent multiple refresh requests
 let isRefreshing = false;
-let refreshSubscribers: any[] = [];
+const refreshSubscribers: Array<(token: string) => void> = [];
 
-const onRrefreshed = (token: any) => {
-  refreshSubscribers.map((cb) => cb(token));
+const onRefreshed = (token: string) => {
+  refreshSubscribers.forEach((cb) => cb(token));
 };
 
-const addRefreshSubscriber = (cb: (token: any) => void) => {
+const addRefreshSubscriber = (cb: (token: string) => void) => {
   refreshSubscribers.push(cb);
 };
 
@@ -75,7 +74,7 @@ axiosInstance.interceptors.response.use(
           const newToken = await refreshAuthToken();
           isRefreshing = false;
           if (newToken) {
-            onRrefreshed(newToken);
+            onRefreshed(newToken);
           } else {
             return Promise.reject(error);
           }

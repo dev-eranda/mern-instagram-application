@@ -1,20 +1,21 @@
 import React from "react";
 import classNames from "classnames";
 import "./Input.css";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
-interface InputProps {
+interface InputProps<T extends FieldValues> {
   label: string;
-  type: string;
-  name: string;
-  value?: any;
+  type: "text" | "password" | "file" | "email" | "number";
+  name: Path<T>;
+  value?: string | number;
   error?: string;
-  register: any;
+  register: UseFormRegister<T>;
   placeholder?: string;
   className?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = <T extends FieldValues>({
   label,
   type,
   name,
@@ -24,7 +25,7 @@ const Input: React.FC<InputProps> = ({
   register,
   className,
   onChange,
-}) => {
+}: InputProps<T>) => {
   return (
     <div className={classNames("input-container", className)}>
       <label className="input-label" htmlFor={name}>

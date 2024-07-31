@@ -9,7 +9,7 @@ import PostList from "../features/post/PostList";
 import PostForm from "../features/post/PostForm";
 import Profile from "../features/profile/Profile";
 
-export default () => (
+const AppRoutes: React.FC = () => (
   <Routes>
     <Route path="/login" element={<PublicRoute element={<Login />} />} />
     <Route path="/register" element={<PublicRoute element={<Register />} />} />
@@ -18,3 +18,5 @@ export default () => (
     <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
   </Routes>
 );
+
+export default AppRoutes;

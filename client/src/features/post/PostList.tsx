@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
-import { getPostsAsync, unlikeAsync } from "../../slices/postSlice";
+import { getPostsAsync } from "../../slices/postSlice";
 import { RootState, AppDispatch } from "../../store";
 import Layout from "../../components/Layout/Layout";
 import "./PostList.css";

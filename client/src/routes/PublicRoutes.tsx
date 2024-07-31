@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootTypes } from "../types";
+import React from "react";
+// import { Navigate, useLocation } from "react-router-dom";
+// import { useSelector } from "react-redux";
+// import { RootTypes } from "../types";
 
 interface PublicRouteProps {
   element: React.ReactElement;

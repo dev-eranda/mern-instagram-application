@@ -96,7 +96,7 @@ const Login: React.FC = () => {
                 <hr className="seperator" />
                 <div className="no-account">
                   <p>
-                    Don't have an account ? Get your <a href="/register">Free account Now</a>
+                    Don&apos;t have an account ? Get your <a href="/register">Free account Now</a>
                   </p>
                 </div>
                 <div className="no-account">
