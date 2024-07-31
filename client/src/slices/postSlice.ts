@@ -12,59 +12,48 @@ const initialState: PostState = {
   loading: false,
 };
 
+export const getPostsAsync = createAsyncThunk("post/getPostAsync", async () => {
+  const response = await axiosInstance.get("/post");
+
+  return response.data.post;
+});
+
 export const likeAsync = createAsyncThunk(
   "post/likeAsync",
-  async ({ postId, token }: { postId: string; token: string }) => {
-    const response = await fetch("/post/like", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ postId }),
+  async ({ postId }: { postId: string }) => {
+    const response = await axiosInstance.put("/post/like", {
+      postId,
     });
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    return await response.json();
-  },
+    return await response.data.post;
+  }
 );
 
 export const unlikeAsync = createAsyncThunk(
   "post/unlikeAsync",
-  async ({ postId, token }: { postId: string; token: string }) => {
-    const response = await fetch("/post/unlike", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ postId }),
+  async ({ postId }: { postId: string }) => {
+    const response = await axiosInstance.put("/post/unlike", {
+      postId,
     });
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    return await response.json();
-  },
+    return await response.data.post;
+  }
 );
 
 export const commentAsync = createAsyncThunk(
   "post/commentAsync",
-  async ({ postId, token, text }: { postId: string; token: string; text: string }) => {
+  async ({ postId, text }: { postId: string; text: string }) => {
     const response = await axiosInstance.put("/post/comment", {
-      body: JSON.stringify({ postId, text }),
+      postId,
+      text,
     });
 
-    return response.data;
-  },
+    return response.data.post;
+  }
 );
 
-export const getPostsAsync = createAsyncThunk("post/getPostAsync", async () => {
-  const response = await axiosInstance.get("/post");
+export const getMyPostsAsync = createAsyncThunk("post/getMyPostsAsync", async () => {
+  const response = await axiosInstance.get("/post/my");
   return response.data;
 });
 
@@ -79,7 +68,7 @@ const postSlice = createSlice({
         state.loading = true;
       })
       .addCase(getPostsAsync.fulfilled, (state, action) => {
-        state.post = action.payload.post;
+        state.post = action.payload;
         state.loading = false;
       })
 
@@ -89,7 +78,7 @@ const postSlice = createSlice({
       })
       .addCase(likeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
         state.loading = false;
       })
@@ -99,7 +88,7 @@ const postSlice = createSlice({
       })
       .addCase(unlikeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
       })
 
@@ -108,8 +97,17 @@ const postSlice = createSlice({
       })
       .addCase(commentAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
+      })
+
+      .addCase(getMyPostsAsync.pending, (state) => {
+        console.log("getMyPostsAsync.pending");
+        state.loading = true;
+      })
+      .addCase(getMyPostsAsync.fulfilled, (state, action) => {
+        state.post = action.payload;
+        state.loading = false;
       });
   },
 });

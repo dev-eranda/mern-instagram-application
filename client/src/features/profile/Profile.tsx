@@ -1,37 +1,23 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootTypes } from "../../types";
-// import { createPost } from "../../slices/postSlice";
+import { AppDispatch } from "../../store";
+import { getMyPostsAsync } from "../../slices/postSlice";
 import Layout from "../../components/Layout/Layout";
 import "./Profile.css";
 
 const Profile = () => {
-  const dispatch = useDispatch();
-  const { user, access_token } = useSelector((state: RootTypes) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootTypes) => state.auth);
   const { post } = useSelector((state: RootTypes) => state.post);
 
   const fetchPosts = useCallback(async () => {
     try {
-      const response = await fetch("/post/my", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-
-      const result = await response.json();
-      if (result.error) {
-        throw new Error(result.error);
-      }
-
-      if (result) {
-        // dispatch(createPost(result));
-      }
+      dispatch(getMyPostsAsync());
     } catch (error) {
       console.log(error);
     }
-  }, [access_token, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchPosts();

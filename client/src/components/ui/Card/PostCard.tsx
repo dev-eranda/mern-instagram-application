@@ -11,36 +11,36 @@ type CardProps = {
 };
 
 const PostCard: React.FC<CardProps> = ({ post }) => {
-  const { user, access_token } = useSelector((state: RootTypes) => state.auth);
+  const { user } = useSelector((state: RootTypes) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
   const [likes, setLikes] = useState(post.likes || []);
   const [comments, setComments] = useState(post.comments || []);
   const [text, setText] = useState("");
 
-  const handleLike = async (postId: string, token: string) => {
+  const handleLike = async (postId: string) => {
     try {
       setLikes([...likes, user?.id ?? ""]);
-      dispatch(likeAsync({ postId, token }));
+      dispatch(likeAsync({ postId }));
     } catch (error) {
       console.log(error);
       setLikes(likes.filter((id) => id !== user?.id));
     }
   };
 
-  const handleUnlike = async (postId: string, token: string) => {
+  const handleUnlike = async (postId: string) => {
     try {
       setLikes(likes.filter((id) => id !== user?.id));
-      dispatch(unlikeAsync({ postId, token }));
+      dispatch(unlikeAsync({ postId }));
     } catch (error) {
       console.log(error);
       setLikes([...likes, user?.id ?? ""]);
     }
   };
 
-  const handleComment = async (postId: string, token: string, text: string) => {
+  const handleComment = async (postId: string, text: string) => {
     try {
-      const resultAction = await dispatch(commentAsync({ postId, token, text }));
+      const resultAction = await dispatch(commentAsync({ postId, text }));
       if (commentAsync.fulfilled.match(resultAction)) {
         const comments = resultAction.payload;
         setComments(comments.post.comments || []);
@@ -66,7 +66,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             alt="save"
             src="./heart-fill.svg"
             onClick={() => {
-              handleUnlike(post._id, access_token);
+              handleUnlike(post._id);
             }}
           />
         ) : (
@@ -74,7 +74,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             alt="save"
             src="./heart.svg"
             onClick={() => {
-              handleLike(post._id, access_token);
+              handleLike(post._id);
             }}
           />
         )}
@@ -112,7 +112,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             alt="like"
             src="./send.svg"
             onClick={() => {
-              handleComment(post._id, access_token, text);
+              handleComment(post._id, text);
             }}
           />
         </div>
