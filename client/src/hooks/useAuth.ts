@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { login, logout, refresh } from "../slices/authSlice";
+import { login, logout } from "../slices/authSlice";
 import { RootTypes } from "../types";
 
 const useAuth = () => {
@@ -12,13 +12,6 @@ const useAuth = () => {
     dispatch(login(userData));
   };
 
-  const handleRefresh = (tokens: {
-    access_token: string;
-    refresh_token: string;
-  }) => {
-    dispatch(refresh(tokens));
-  };
-
   const handleLogout = () => {
     dispatch(logout(null));
   };
@@ -29,7 +22,6 @@ const useAuth = () => {
     refresh_token,
     user,
     login: handleLogin,
-    refresh: handleRefresh,
     logout: handleLogout,
   };
 };
