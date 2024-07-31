@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./loginSchema";
 import { z } from "zod";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 type FormFields = z.infer<typeof schema>;
@@ -20,6 +21,7 @@ const Login: React.FC = () => {
     resolver: zodResolver(schema),
   });
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     const { email, password } = data;
@@ -34,12 +36,15 @@ const Login: React.FC = () => {
       });
 
       const result = await response.json();
+      const { accessToken, refreshToken } = result;
 
-      if (result.error) {
-        throw new Error(result.error);
-      } else {
-        login(result);
-      }
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("isAuth", "true");
+
+      login(result);
+
+      navigate("/");
     } catch (error) {
       if (error instanceof Error) {
         setError("root", {

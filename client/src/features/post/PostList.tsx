@@ -1,32 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
-import { RootTypes } from "../../types";
+// import { RootTypes } from "../../types";
 import { createPost } from "../../slices/postSlice";
-import Layout from "../../components/Layout/Layout";
-import "./PostList.css";
 import { RootState } from "../../store";
+import Layout from "../../components/Layout/Layout";
+import axiosInstance from "../../axios/axiosInstance ";
+import "./PostList.css";
 
 const Post = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state: RootTypes) => state.auth);
-  const { post, loading } = useSelector((state: RootState) => state.post);
+  const { post } = useSelector((state: RootState) => state.post);
 
-  const fetchData = async (token: string) => {
+  const fetchData = async () => {
     try {
-      const response = await fetch("/post", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
+      const response = await axiosInstance.get("/post");
+      const data = await response.data;
       dispatch(createPost(data));
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -34,10 +23,8 @@ const Post = () => {
   };
 
   useEffect(() => {
-    if (token) {
-      fetchData(token);
-    }
-  }, [token]);
+    fetchData();
+  }, []);
 
   return (
     <Layout>

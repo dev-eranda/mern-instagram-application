@@ -35,7 +35,7 @@ const PostForm = ({ post }: postFormProps) => {
     resolver: zodResolver(Schema),
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-  const { token } = useSelector((state: RootTypes) => state.auth);
+  const { access_token } = useSelector((state: RootTypes) => state.auth);
 
   const postDetails = async (file: File): Promise<string> => {
     const data = new FormData();
@@ -71,7 +71,7 @@ const PostForm = ({ post }: postFormProps) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${access_token}`,
           },
           body: JSON.stringify({ title, body, image_url: imageUrl }),
         });

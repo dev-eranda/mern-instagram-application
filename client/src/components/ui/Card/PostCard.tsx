@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Post, PostState } from "../../../types/post";
+import React, { useState } from "react";
+import { Post } from "../../../types/post";
 import { RootTypes } from "../../../types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,7 +15,7 @@ type CardProps = {
 };
 
 const PostCard: React.FC<CardProps> = ({ post }) => {
-  const { user, token } = useSelector((state: RootTypes) => state.auth);
+  const { user, access_token } = useSelector((state: RootTypes) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
   const [likes, setLikes] = useState(post.likes || []);
@@ -72,7 +72,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             alt="save"
             src="./heart-fill.svg"
             onClick={() => {
-              handleUnlike(post._id, token);
+              handleUnlike(post._id, access_token);
             }}
           />
         ) : (
@@ -80,7 +80,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             alt="save"
             src="./heart.svg"
             onClick={() => {
-              handleLike(post._id, token);
+              handleLike(post._id, access_token);
             }}
           />
         )}
@@ -124,7 +124,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
             alt="like"
             src="./send.svg"
             onClick={() => {
-              handleComment(post._id, token, text);
+              handleComment(post._id, access_token, text);
             }}
           />
         </div>

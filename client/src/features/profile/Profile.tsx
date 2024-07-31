@@ -7,7 +7,7 @@ import "./Profile.css";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { user, token } = useSelector((state: RootTypes) => state.auth);
+  const { user, access_token } = useSelector((state: RootTypes) => state.auth);
   const { post } = useSelector((state: RootTypes) => state.post);
 
   const fetchPosts = useCallback(async () => {
@@ -16,7 +16,7 @@ const Profile = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${access_token}`,
         },
       });
 
@@ -31,7 +31,7 @@ const Profile = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [token, dispatch]);
+  }, [access_token, dispatch]);
 
   useEffect(() => {
     fetchPosts();
