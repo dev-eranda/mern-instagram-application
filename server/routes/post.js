@@ -98,7 +98,9 @@ router.put('/post/like', requireLogin, async (req, res) => {
             postId,
             { $addToSet: { likes: _id } }, // add like only once 
             { new: true }
-        )
+        )  
+        .populate("postedBy", "_id name")
+        .populate("comments.commentedBy", "_id name")
 
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
@@ -134,6 +136,8 @@ router.put('/post/unlike', requireLogin, async (req, res) => {
             postId,
             { $pull: { likes: _id } },
             { new: true })
+            .populate("postedBy", "_id name")
+            .populate("comments.commentedBy", "_id name")
 
         if (!post) {
             return res.status(404).json({ error: "Post not found" })
