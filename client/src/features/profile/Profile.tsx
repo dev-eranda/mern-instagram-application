@@ -21,10 +21,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, [dispatch]);
-
-  console.log(post);
-  console.log(Array.isArray(post));
+  }, []);
 
   return (
     <Layout>

@@ -8,9 +8,12 @@ import rootReducer from "./slices";
 // };
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
+const devTools =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__();
 
 const store = configureStore({
   reducer: rootReducer,
+  devTools: devTools,
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({
   //     serializableCheck: false,

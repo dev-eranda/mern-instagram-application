@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
-import "./Dropdown.css";
 import { useSelector } from "react-redux";
 import { RootTypes } from "../../../types";
+import useAuth from "../../../hooks/useAuth";
+import "./Dropdown.css";
 
 interface dropdownProps {
   isOpen: boolean;
