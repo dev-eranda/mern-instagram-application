@@ -5,12 +5,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "../../types/post";
-import { useSelector } from "react-redux";
-import { RootTypes } from "../../types";
 import { Schema } from "./PostSchema";
 import z from "zod";
-
+import { createPostAsync } from "../../slices/postSlice";
+import { useDispatch } from "react-redux";
 import "./PostForm.css";
+import { AppDispatch } from "../../store";
 
 type FormFields = z.infer<typeof Schema>;
 type postFormProps = {
@@ -35,54 +35,16 @@ const PostForm = ({ post }: postFormProps) => {
     resolver: zodResolver(Schema),
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-  // const { access_token } = useSelector((state: RootTypes) => state.auth);
-
-  const postDetails = async (file: File): Promise<string> => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "insta-clone");
-    data.append("cloud_name", "dgbgvecx3");
-
-    const response = await fetch("https://api.cloudinary.com/v1_1/dgbgvecx3/image/upload", {
-      method: "POST",
-      body: data,
-    });
-
-    const result = await response.json();
-    if (result.error) {
-      throw new Error(result.error.message);
-    }
-    return result.url;
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    const title = data.title;
-    const body = data.description;
-    const file = data.file;
-
     try {
-      const imageUrl = await postDetails(file[0]);
+      const { title, description, file } = data;
+      dispatch(createPostAsync({ title, description, file }));
 
-      if (imageUrl) {
-        const response = await fetch("/post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `Bearer ${access_token}`,
-          },
-          body: JSON.stringify({ title, body, image_url: imageUrl }),
-        });
-
-        const result = await response.json();
-        if (result.error) {
-          throw new Error(result.error);
-        }
-        alert("success");
-
-        // Clear the form values
-        reset();
-        setImage(null);
-      }
+      // alert("success");
+      // reset();
+      // setImage(null);
     } catch (error) {
       if (error instanceof Error) {
         setError("root", {

@@ -1,6 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AsyncThunkAction, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../types/post";
 import axiosInstance from "../axios/axiosInstance ";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import axios from "axios";
 
 interface PostState {
   post: Post[];
@@ -13,9 +15,7 @@ const initialState: PostState = {
 };
 
 export const getPostsAsync = createAsyncThunk("post/getPostAsync", async () => {
-  console.log("getPostsAsync");
   const response = await axiosInstance.get("/post");
-  console.log("asdas", response.data);
 
   return response.data.post;
 });
@@ -56,8 +56,37 @@ export const commentAsync = createAsyncThunk(
 
 export const getMyPostsAsync = createAsyncThunk("post/getMyPostsAsync", async () => {
   const response = await axiosInstance.get("/post/my");
-  return response.data;
+  return response.data.post;
 });
+
+export const storeImageAync = createAsyncThunk("Post/storeImageAync", async (file: File) => {
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", "insta-clone");
+  data.append("cloud_name", "dgbgvecx3");
+
+  const response = await axios.post("https://api.cloudinary.com/v1_1/dgbgvecx3/image/upload", data);
+
+  return response.data.url;
+});
+
+export const createPostAsync = createAsyncThunk(
+  "post/createPostAsync",
+  async (
+    { title, description, file }: { title: string; description: string; file: File[] },
+    { dispatch }
+  ) => {
+    const imageUrl = await dispatch(storeImageAync(file[0])).unwrap();
+    if (imageUrl) {
+      const response = await axiosInstance.post("/post", {
+        title,
+        body: description,
+        image_url: imageUrl,
+      });
+      return response.data;
+    }
+  }
+);
 
 const postSlice = createSlice({
   name: "post",
@@ -71,6 +100,23 @@ const postSlice = createSlice({
       })
       .addCase(getPostsAsync.fulfilled, (state, action) => {
         state.post = action.payload;
+        state.loading = false;
+      })
+
+      .addCase(createPostAsync.pending, (state) => {
+        console.log("createPostAsync.pending");
+        state.loading = true;
+      })
+      .addCase(createPostAsync.fulfilled, (state) => {
+        state.loading = false;
+      })
+
+      .addCase(storeImageAync.pending, (state) => {
+        console.log("storeImageAync.pending");
+        state.loading = true;
+      })
+      .addCase(storeImageAync.fulfilled, (state) => {
+        console.log("storeImageAync.fulfilled");
         state.loading = false;
       })
 
@@ -116,3 +162,6 @@ const postSlice = createSlice({
 
 export const {} = postSlice.actions;
 export default postSlice.reducer;
+function dispatch(arg0: AsyncThunkAction<any, File, AsyncThunkConfig>) {
+  throw new Error("Function not implemented.");
+}

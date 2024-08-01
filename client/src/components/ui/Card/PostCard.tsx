@@ -40,7 +40,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
 
   const handleComment = async (postId: string, text: string) => {
     try {
-      const resultAction = await dispatch(commentAsync({ postId, text }));
+      const resultAction = dispatch(commentAsync({ postId, text }));
       if (commentAsync.fulfilled.match(resultAction)) {
         const comments = resultAction.payload;
         setComments(comments.post.comments || []);

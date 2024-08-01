@@ -21,7 +21,10 @@ const Profile = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, [fetchPosts]);
+  }, [dispatch]);
+
+  console.log(post);
+  console.log(Array.isArray(post));
 
   return (
     <Layout>
@@ -38,9 +41,9 @@ const Profile = () => {
           </div>
         </div>
         <div className="post-wrapper">
-          {Array.isArray(post) && post.length > 0 ? (
-            post.map((post, index) => (
-              <div key={index} className="post-item">
+          {post && post.length > 0 ? (
+            post.map((post) => (
+              <div key={post._id} className="post-item">
                 <img alt="post" src={post.photo} />
                 <span className="post-title">{post?.title}</span>
               </div>
