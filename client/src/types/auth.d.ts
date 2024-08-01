@@ -5,8 +5,5 @@ export interface User {
 }
 
 export interface AuthState {
-  isAuthenticated: boolean;
-  access_token: string;
-  refresh_token: string;
-  user: User | null;
+  user: User;
 }

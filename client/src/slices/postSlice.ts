@@ -13,7 +13,9 @@ const initialState: PostState = {
 };
 
 export const getPostsAsync = createAsyncThunk("post/getPostAsync", async () => {
+  console.log("getPostsAsync");
   const response = await axiosInstance.get("/post");
+  console.log("asdas", response.data);
 
   return response.data.post;
 });

@@ -11,6 +11,8 @@ const Post = () => {
   const { post } = useSelector((state: RootState) => state.post);
 
   const fetchData = async () => {
+    console.log("fetchdata");
+
     dispatch(getPostsAsync());
   };
 

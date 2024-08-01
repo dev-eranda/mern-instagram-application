@@ -4,9 +4,7 @@ import { RootTypes } from "../types";
 
 const useAuth = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, access_token, refresh_token, user } = useSelector(
-    (state: RootTypes) => state.auth
-  );
+  const { user } = useSelector((state: RootTypes) => state.auth);
 
   const handleLogin = (userData: object) => {
     dispatch(login(userData));
@@ -17,9 +15,6 @@ const useAuth = () => {
   };
 
   return {
-    isAuthenticated,
-    access_token,
-    refresh_token,
     user,
     login: handleLogin,
     logout: handleLogout,

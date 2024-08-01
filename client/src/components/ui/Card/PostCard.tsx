@@ -18,8 +18,6 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const [comments, setComments] = useState(post.comments || []);
   const [text, setText] = useState("");
 
-  console.log(post.postedBy.name);
-
   const handleLike = async (postId: string) => {
     try {
       setLikes([...likes, user?.id ?? ""]);
@@ -54,7 +52,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   };
 
   return (
-    <div key={post.title} className="card">
+    <div key={post._id} className="card">
       <h2>@{post.postedBy.name}</h2>
       <div className="post-title">
         <span>{post.title}</span>
