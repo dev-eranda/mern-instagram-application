@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 
     try {
         const payload = jwt.verify(token, JWT_SECRET, (error, user) => {
-
+console.log(error)
             if (error) {
                 return res.status(401).json("Token is not valid!")
             }

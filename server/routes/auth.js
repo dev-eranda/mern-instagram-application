@@ -135,10 +135,16 @@ router.post("/refresh", async (req, res) => {
   });
 });
 
+router.get("/user", requireLogin, async (req, res) => {
+  const currentUser = req.user
+  res.status(200).json(currentUser)
+});
+
 router.post("/logout", requireLogin, async (req, res) => {
   const refreshToken = req.body.token
   refreshTokens = refreshTokens.filter(token => token !== refreshToken)
   res.status(200).json("You logged out successfully")
 });
+
 
 module.exports = router;
