@@ -1,6 +1,6 @@
-import { AsyncThunkAction, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../types/post";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+// import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import axiosInstance from "../axios/axiosInstance ";
 import axios from "axios";
 
@@ -92,7 +92,7 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getPostsAsync.pending, (state) => {
+      .addCase(getPostsAsync.pending, () => {
         console.log("getPostsAsync.pending");
       })
       .addCase(getPostsAsync.fulfilled, (state, action) => {
@@ -151,6 +151,6 @@ const postSlice = createSlice({
 
 export const {} = postSlice.actions;
 export default postSlice.reducer;
-function dispatch(arg0: AsyncThunkAction<any, File, AsyncThunkConfig>) {
-  throw new Error("Function not implemented.");
-}
+// function dispatch(arg0: AsyncThunkAction<any, File, AsyncThunkConfig>) {
+//   throw new Error("Function not implemented.");
+// }

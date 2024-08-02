@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Post } from "../../../types/post";
-import { RootTypes } from "../../../types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { commentAsync, likeAsync, unlikeAsync } from "../../../slices/postSlice";
 import { AppDispatch } from "../../../store";
 import "./Card.css";
@@ -11,7 +10,6 @@ type CardProps = {
 };
 
 const PostCard: React.FC<CardProps> = ({ post }) => {
-  // const { user } = useSelector((state: RootTypes) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
   const [likes, setLikes] = useState(post.likes || []);
