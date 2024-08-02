@@ -22,7 +22,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const handleLike = async (postId: string) => {
     try {
       setLikes([...likes, userId ?? ""]);
-      dispatch(likeAsync({ postId }));
+      await dispatch(likeAsync({ postId }));
     } catch (error) {
       console.log(error);
       setLikes(likes.filter((id) => id !== userId));
@@ -32,7 +32,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const handleUnlike = async (postId: string) => {
     try {
       setLikes(likes.filter((id) => id !== userId));
-      dispatch(unlikeAsync({ postId }));
+      await dispatch(unlikeAsync({ postId }));
     } catch (error) {
       console.log(error);
       setLikes([...likes, userId ?? ""]);
@@ -41,10 +41,10 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
 
   const handleComment = async (postId: string, text: string) => {
     try {
-      const resultAction = dispatch(commentAsync({ postId, text }));
+      const resultAction = await dispatch(commentAsync({ postId, text }));
       if (commentAsync.fulfilled.match(resultAction)) {
-        const comments = resultAction.payload;
-        setComments(comments.post.comments || []);
+        const post = resultAction.payload;
+        setComments(post.comments || []);
         setText("");
       }
     } catch (error) {
