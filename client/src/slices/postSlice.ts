@@ -1,17 +1,15 @@
 import { AsyncThunkAction, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../types/post";
-import axiosInstance from "../axios/axiosInstance ";
 import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import axiosInstance from "../axios/axiosInstance ";
 import axios from "axios";
 
 interface PostState {
   post: Post[];
-  loading: boolean;
 }
 
 const initialState: PostState = {
   post: [],
-  loading: false,
 };
 
 export const getPostsAsync = createAsyncThunk("post/getPostAsync", async () => {
@@ -96,39 +94,32 @@ const postSlice = createSlice({
     builder
       .addCase(getPostsAsync.pending, (state) => {
         console.log("getPostsAsync.pending");
-        state.loading = true;
       })
       .addCase(getPostsAsync.fulfilled, (state, action) => {
         state.post = action.payload;
-        state.loading = false;
       })
 
-      .addCase(createPostAsync.pending, (state) => {
+      .addCase(createPostAsync.pending, () => {
         console.log("createPostAsync.pending");
-        state.loading = true;
       })
-      .addCase(createPostAsync.fulfilled, (state) => {
-        state.loading = false;
+      .addCase(createPostAsync.fulfilled, () => {
+        console.log("createPostAsync.fulfilled");
       })
 
-      .addCase(storeImageAync.pending, (state) => {
+      .addCase(storeImageAync.pending, () => {
         console.log("storeImageAync.pending");
-        state.loading = true;
       })
-      .addCase(storeImageAync.fulfilled, (state) => {
+      .addCase(storeImageAync.fulfilled, () => {
         console.log("storeImageAync.fulfilled");
-        state.loading = false;
       })
 
-      .addCase(likeAsync.pending, (state) => {
+      .addCase(likeAsync.pending, () => {
         console.log("likeAsync.pending");
-        state.loading = true;
       })
       .addCase(likeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
           post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
-        state.loading = false;
       })
 
       .addCase(unlikeAsync.pending, () => {
@@ -149,13 +140,11 @@ const postSlice = createSlice({
         );
       })
 
-      .addCase(getMyPostsAsync.pending, (state) => {
+      .addCase(getMyPostsAsync.pending, () => {
         console.log("getMyPostsAsync.pending");
-        state.loading = true;
       })
       .addCase(getMyPostsAsync.fulfilled, (state, action) => {
         state.post = action.payload;
-        state.loading = false;
       });
   },
 });

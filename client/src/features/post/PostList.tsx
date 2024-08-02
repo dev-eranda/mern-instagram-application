@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
 import { getPostsAsync } from "../../slices/postSlice";
@@ -9,9 +9,17 @@ import "./PostList.css";
 const Post = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { post } = useSelector((state: RootState) => state.post);
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
-    dispatch(getPostsAsync());
+    setLoading(true);
+    try {
+      await dispatch(getPostsAsync());
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -21,10 +29,12 @@ const Post = () => {
   return (
     <Layout>
       <div className="post-section">
-        {post && post.length > 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : post && post.length > 0 ? (
           post.map((post) => <PostCard key={post._id} post={post} />)
         ) : (
-          <p>No post available...</p>
+          <p>No posts available...</p>
         )}
       </div>
     </Layout>

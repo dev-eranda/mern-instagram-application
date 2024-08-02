@@ -11,30 +11,31 @@ type CardProps = {
 };
 
 const PostCard: React.FC<CardProps> = ({ post }) => {
-  const { user } = useSelector((state: RootTypes) => state.auth);
+  // const { user } = useSelector((state: RootTypes) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
   const [likes, setLikes] = useState(post.likes || []);
   const [comments, setComments] = useState(post.comments || []);
   const [text, setText] = useState("");
+  const userId = localStorage.getItem("_id");
 
   const handleLike = async (postId: string) => {
     try {
-      setLikes([...likes, user?.id ?? ""]);
+      setLikes([...likes, userId ?? ""]);
       dispatch(likeAsync({ postId }));
     } catch (error) {
       console.log(error);
-      setLikes(likes.filter((id) => id !== user?.id));
+      setLikes(likes.filter((id) => id !== userId));
     }
   };
 
   const handleUnlike = async (postId: string) => {
     try {
-      setLikes(likes.filter((id) => id !== user?.id));
+      setLikes(likes.filter((id) => id !== userId));
       dispatch(unlikeAsync({ postId }));
     } catch (error) {
       console.log(error);
-      setLikes([...likes, user?.id ?? ""]);
+      setLikes([...likes, userId ?? ""]);
     }
   };
 
@@ -61,7 +62,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         <img alt="photo" src={post.photo || "./logo512.png"} />
       </div>
       <div className="action-container">
-        {likes.includes(user?.id ?? "") ? (
+        {likes.includes(userId ?? "") ? (
           <img
             alt="save"
             src="./heart-fill.svg"

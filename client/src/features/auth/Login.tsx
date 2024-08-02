@@ -40,10 +40,9 @@ const Login: React.FC = () => {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("isAuth", "true");
+      localStorage.setItem("_id", result.user._id);
 
       login(result);
-
       navigate("/");
     } catch (error) {
       if (error instanceof Error) {
