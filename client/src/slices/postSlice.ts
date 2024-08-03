@@ -95,7 +95,6 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, action) => {
-      console.log(action.payload);
       state.post = action.payload.post;
     },
 
