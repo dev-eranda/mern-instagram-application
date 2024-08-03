@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../types/post";
-// import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
-import axiosInstance from "../axios/axiosInstance ";
 import axios from "axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 interface PostState {
   post: Post[];
@@ -13,47 +12,51 @@ const initialState: PostState = {
 };
 
 export const getPostsAsync = createAsyncThunk("post/getPostAsync", async () => {
-  const response = await axiosInstance.get("/post");
-
+  const axiosPrivate = useAxiosPrivate();
+  const response = await axiosPrivate.get("/post");
   return response.data.post;
 });
 
 export const likeAsync = createAsyncThunk(
   "post/likeAsync",
   async ({ postId }: { postId: string }) => {
-    const response = await axiosInstance.put("/post/like", {
+    const axiosPrivate = useAxiosPrivate();
+    const response = await axiosPrivate.put("/post/like", {
       postId,
     });
 
     return await response.data.post;
-  },
+  }
 );
 
 export const unlikeAsync = createAsyncThunk(
   "post/unlikeAsync",
   async ({ postId }: { postId: string }) => {
-    const response = await axiosInstance.put("/post/unlike", {
+    const axiosPrivate = useAxiosPrivate();
+    const response = await axiosPrivate.put("/post/unlike", {
       postId,
     });
 
     return await response.data.post;
-  },
+  }
 );
 
 export const commentAsync = createAsyncThunk(
   "post/commentAsync",
   async ({ postId, text }: { postId: string; text: string }) => {
-    const response = await axiosInstance.put("/post/comment", {
+    const axiosPrivate = useAxiosPrivate();
+    const response = await axiosPrivate.put("/post/comment", {
       postId,
       text,
     });
 
     return response.data.post;
-  },
+  }
 );
 
 export const getMyPostsAsync = createAsyncThunk("post/getMyPostsAsync", async () => {
-  const response = await axiosInstance.get("/post/my");
+  const axiosPrivate = useAxiosPrivate();
+  const response = await axiosPrivate.get("/post/my");
   return response.data.post;
 });
 
@@ -72,24 +75,37 @@ export const createPostAsync = createAsyncThunk(
   "post/createPostAsync",
   async (
     { title, description, file }: { title: string; description: string; file: File[] },
-    { dispatch },
+    { dispatch }
   ) => {
     const imageUrl = await dispatch(storeImageAync(file[0])).unwrap();
     if (imageUrl) {
-      const response = await axiosInstance.post("/post", {
+      const axiosPrivate = useAxiosPrivate();
+      const response = await axiosPrivate.post("/post", {
         title,
         body: description,
         image_url: imageUrl,
       });
       return response.data;
     }
-  },
+  }
 );
 
 const postSlice = createSlice({
   name: "post",
   initialState,
-  reducers: {},
+  reducers: {
+    setPosts: (state, action) => {
+      console.log(action.payload);
+      state.post = action.payload.post;
+    },
+
+    // setAuthData: (state, action: PayloadAction<SetAuthDataPayload>) => {
+    //   const { accessToken, refreshToken, user } = action.payload;
+    //   state.accessToken = accessToken;
+    //   state.refreshToken = refreshToken;
+    //   state.user = user;
+    // },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPostsAsync.pending, () => {
@@ -118,7 +134,7 @@ const postSlice = createSlice({
       })
       .addCase(likeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
       })
 
@@ -127,7 +143,7 @@ const postSlice = createSlice({
       })
       .addCase(unlikeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
       })
 
@@ -136,7 +152,7 @@ const postSlice = createSlice({
       })
       .addCase(commentAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
       })
 
@@ -149,7 +165,7 @@ const postSlice = createSlice({
   },
 });
 
-export const {} = postSlice.actions;
+export const { setPosts } = postSlice.actions;
 export default postSlice.reducer;
 // function dispatch(arg0: AsyncThunkAction<any, File, AsyncThunkConfig>) {
 //   throw new Error("Function not implemented.");

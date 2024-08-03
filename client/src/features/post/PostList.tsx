@@ -1,38 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
-import { getPostsAsync } from "../../slices/postSlice";
+import { setPosts } from "../../slices/postSlice";
 import { RootState, AppDispatch } from "../../store";
 import Layout from "../../components/Layout/Layout";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./PostList.css";
 
-import useRefreshToke from "../../hooks/useRefreshToken";
-
 const Post = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const { post } = useSelector((state: RootState) => state.post);
   const [loading, setLoading] = useState(false);
-
-  const refresh = useRefreshToke();
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      await dispatch(getPostsAsync());
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const dispatch = useDispatch<AppDispatch>();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    fetchData();
-  }, [dispatch]);
+    let isMounted = true;
+    const controller = new AbortController();
+    setLoading(false);
+
+    const getPost = async () => {
+      try {
+        const response = await axiosPrivate.get("/post");
+        isMounted && dispatch(setPosts(response.data));
+      } catch (error) {
+        console.error(error);
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getPost();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
 
   return (
     <Layout>
-      <button onClick={() => refresh()}>refresh</button>
       <div className="post-section">
         {loading ? (
           <p>Loading...</p>
