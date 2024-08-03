@@ -1,9 +1,12 @@
 export interface User {
-  id: string;
-  name: string;
-  email: string;
+  _id: string | null;
+  name: string | null;
+  email: string | null;
+  roles: number[];
 }
 
 export interface AuthState {
+  accessToken: string | null;
+  refreshToken: string | null;
   user: User;
 }

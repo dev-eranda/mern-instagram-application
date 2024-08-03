@@ -1,23 +1,38 @@
 import { useSelector, useDispatch } from "react-redux";
-import { login, logout } from "../slices/authSlice";
+import { setAuthData } from "../slices/authSlice";
 import { RootTypes } from "../types";
+import { AppDispatch } from "../store";
+import { User } from "../types/auth";
 
 const useAuth = () => {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state: RootTypes) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, accessToken, refreshToken } = useSelector((state: RootTypes) => state.auth);
 
-  const handleLogin = (userData: object) => {
-    dispatch(login(userData));
-  };
+  const handleAuth = (
+    data: Partial<{
+      accessToken: string;
+      refreshToken: string;
+      user: User;
+    }>
+  ) => {
+    const newAccessToken = data.accessToken ?? accessToken ?? "";
+    const newRefreshToken = data.refreshToken ?? refreshToken ?? "";
+    const newUser = data.user ?? user;
 
-  const handleLogout = () => {
-    dispatch(logout(null));
+    dispatch(
+      setAuthData({
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+        user: newUser,
+      })
+    );
   };
 
   return {
     user,
-    login: handleLogin,
-    logout: handleLogout,
+    accessToken,
+    refreshToken,
+    setAuth: handleAuth,
   };
 };
 

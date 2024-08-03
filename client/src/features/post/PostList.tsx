@@ -6,10 +6,14 @@ import { RootState, AppDispatch } from "../../store";
 import Layout from "../../components/Layout/Layout";
 import "./PostList.css";
 
+import useRefreshToke from "../../hooks/useRefreshToken";
+
 const Post = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { post } = useSelector((state: RootState) => state.post);
   const [loading, setLoading] = useState(false);
+
+  const refresh = useRefreshToke();
 
   const fetchData = async () => {
     setLoading(true);
@@ -28,6 +32,7 @@ const Post = () => {
 
   return (
     <Layout>
+      <button onClick={() => refresh()}>refresh</button>
       <div className="post-section">
         {loading ? (
           <p>Loading...</p>

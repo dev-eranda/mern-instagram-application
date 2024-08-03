@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootTypes } from "../../../types";
 import { AppDispatch } from "../../../store";
-import { getUserAsync } from "../../../slices/authSlice";
-import useAuth from "../../../hooks/useAuth";
+// import { getUserAsync } from "../../../slices/authSlice";
+// import useAuth from "../../../hooks/useAuth";
 import "./Dropdown.css";
 
 interface dropdownProps {
@@ -15,17 +15,16 @@ const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
   const { user } = useSelector((state: RootTypes) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
   const handleLogout = () => {
-    logout();
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("_id");
+    // logout();
   };
 
   useEffect(() => {
-    dispatch(getUserAsync());
-  }, [dispatch]);
+    if (isOpen) {
+      // dispatch(getUserAsync());
+    }
+  }, [isOpen]);
 
   return (
     <>

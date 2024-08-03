@@ -1,52 +1,38 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../axios/axiosInstance ";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthState, User } from "../types/auth"; // Adjust the import path
 
-export const getUserAsync = createAsyncThunk("user/getUserAsync", async () => {
-  const response = await axiosInstance.get("/user");
+// Define the initial state with the AuthState type
+const initialState: AuthState = {
+  accessToken: null,
+  refreshToken: null,
+  user: {
+    _id: null,
+    name: null,
+    email: null,
+    roles: [],
+  },
+};
 
-  return response.data;
-});
+// Define the type for the payload in setAuthData action
+interface SetAuthDataPayload {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+}
 
+// Create the slice with TypeScript
 const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    user: {
-      id: null,
-      name: null,
-      email: null,
-    },
-  },
+  initialState,
   reducers: {
-    login: (state, action) => {
-      state.user = {
-        id: action.payload.user._id,
-        name: action.payload.user.name,
-        email: action.payload.user.email,
-      };
+    setAuthData: (state, action: PayloadAction<SetAuthDataPayload>) => {
+      const { accessToken, refreshToken, user } = action.payload;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.user = user;
     },
-
-    logout: (state, action) => {
-      state.user = {
-        id: action.payload,
-        name: action.payload,
-        email: action.payload,
-      };
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getUserAsync.pending, () => {
-        console.log("getUserAsync.pending");
-      })
-      .addCase(getUserAsync.fulfilled, (state, action) => {
-        state.user = {
-          id: action.payload._id,
-          name: action.payload.name,
-          email: action.payload.email,
-        };
-      });
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { setAuthData } = authSlice.actions;
 export default authSlice.reducer;
