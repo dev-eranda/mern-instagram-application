@@ -12,7 +12,7 @@ const generateAccessToken = (user) => {
   return jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
     JWT_SECRET,
-    { expiresIn: "1m" }
+    { expiresIn: "10s" }
   );
 };
 
@@ -92,10 +92,14 @@ router.post("/signin", async (req, res) => {
       refreshTokens.push(refreshToken);
       const { _id, name, email } = user;
 
+      const roles = [2001, 1980]
+
       return res.status(200).json({
         accessToken,
         refreshToken,
-        user: { _id, name, email },
+        user: { _id, name, email, roles
+
+         },
       });
     } else {
       return res
@@ -111,6 +115,8 @@ router.post("/signin", async (req, res) => {
 router.post("/refresh", async (req, res) => {
   //take the refresh token from user
   const refreshToken = req.body.token;
+
+  console.log(refreshToken)
 
   //send error if there is no token or it's invalid
   if (!refreshToken) {

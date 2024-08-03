@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../keys')
 const mongoose = require('mongoose')
-const User = mongoose.model("User")
+// const User = mongoose.model("User")
 
 module.exports = async (req, res, next) => {
     const { authorization } = req.headers
@@ -15,9 +15,9 @@ module.exports = async (req, res, next) => {
 
     try {
         const payload = jwt.verify(token, JWT_SECRET, (error, user) => {
-console.log(error)
             if (error) {
-                return res.status(401).json("Token is not valid!")
+                console.log(error)
+                return res.status(403).json("Token is not valid!")
             }
             req.user = user;
             next();

@@ -18,7 +18,12 @@ mongoose.connection.on('error', (error) => {
 require('./models/user')
 require('./models/post')
 
-app.use(cors())
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+}
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
