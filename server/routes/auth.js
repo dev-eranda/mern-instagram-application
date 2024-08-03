@@ -9,6 +9,7 @@ const { JWT_SECRET, JWT_REFRESH_SECRET } = require("../keys");
 const requireLogin = require('../middleware/requireLogin')
 
 const generateAccessToken = (user) => {
+  console.log("acccc",user)
   return jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
     JWT_SECRET,
@@ -17,9 +18,13 @@ const generateAccessToken = (user) => {
 };
 
 const generateRefreshToken = (user) => {
+  console.log("refresh", user)
+
   return jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
-    JWT_REFRESH_SECRET
+    JWT_REFRESH_SECRET,
+    { expiresIn: "15s" }
+
   );
 };
 
@@ -92,7 +97,7 @@ router.post("/signin", async (req, res) => {
       refreshTokens.push(refreshToken);
       const { _id, name, email } = user;
 
-      const roles = [2001, 1980]
+      const roles = [2001, 1984]
 
       return res.status(200).json({
         accessToken,
@@ -116,8 +121,6 @@ router.post("/refresh", async (req, res) => {
   //take the refresh token from user
   const refreshToken = req.body.token;
 
-  console.log(refreshToken)
-
   //send error if there is no token or it's invalid
   if (!refreshToken) {
     return res.status(401).json("You are not authenticated!");
@@ -128,7 +131,11 @@ router.post("/refresh", async (req, res) => {
   }
 
   jwt.verify(refreshToken, JWT_REFRESH_SECRET, (error, user) => {
-    error && console.log(error);
+    if (error) {
+      console.error("Refresh token verification failed:", error);
+      return res.status(403).json({ message: "Refresh token is not valid!" });
+    }
+
     refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
     const newAccessToken = generateAccessToken(user);
     const newRefreshToken = generateRefreshToken(user);
