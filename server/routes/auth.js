@@ -9,7 +9,6 @@ const { JWT_SECRET, JWT_REFRESH_SECRET } = require("../keys");
 const requireLogin = require('../middleware/requireLogin')
 
 const generateAccessToken = (user) => {
-  console.log("acccc",user)
   return jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
     JWT_SECRET,
@@ -18,13 +17,10 @@ const generateAccessToken = (user) => {
 };
 
 const generateRefreshToken = (user) => {
-  console.log("refresh", user)
-
   return jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
     JWT_REFRESH_SECRET,
     { expiresIn: "15s" }
-
   );
 };
 
