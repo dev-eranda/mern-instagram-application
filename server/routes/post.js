@@ -6,7 +6,7 @@ const requireLogin = require('../middleware/requireLogin')
 const joi = require('joi')
 
 
-router.get('/api/test', requireLogin, async (req, res) => {
+router.get('/api/test', async (req, res) => {
     try {
         return res.status(200).json("api/test")
     }
@@ -16,7 +16,7 @@ router.get('/api/test', requireLogin, async (req, res) => {
     }
 })
 
-router.get('/test', requireLogin, async (req, res) => {
+router.get('/test', async (req, res) => {
     try {
        
         return res.status(200).json("test")
