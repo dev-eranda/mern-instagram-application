@@ -2,7 +2,6 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://192.168.8.124:5000",
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@reduxjs/toolkit": "^2.2.6",

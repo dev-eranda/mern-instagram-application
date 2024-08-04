@@ -5,11 +5,21 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./loginSchema";
 import { z } from "zod";
-import useAuth from "../../hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
+import { AxiosError } from "axios";
+import useAuth from "../../hooks/useAuth";
+import axios from "../../api/axios";
 import "./Login.css";
 
 type FormFields = z.infer<typeof schema>;
+
+interface ErrorResponse {
+  error: string;
+}
+
+function isAxiosError(error: any): error is AxiosError {
+  return error.isAxiosError === true;
+}
 
 const Login: React.FC = () => {
   const {
@@ -29,15 +39,8 @@ const Login: React.FC = () => {
     const { email, password } = data;
 
     try {
-      const response = await fetch("/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const result = await response.json();
+      const response = await axios.post("/signin", { email, password });
+      const result = await response.data;
       setAuth({
         accessToken: result.accessToken,
         refreshToken: result.refreshToken,
@@ -50,7 +53,14 @@ const Login: React.FC = () => {
       });
       navigate(from, { replace: true });
     } catch (error) {
-      if (error instanceof Error) {
+      if (isAxiosError(error)) {
+        const serverError = error.response?.data as ErrorResponse;
+        const errorMessage = serverError?.error || "An unexpected error occurred";
+        setError("root", {
+          type: "manual",
+          message: errorMessage,
+        });
+      } else if (error instanceof Error) {
         setError("root", {
           type: "manual",
           message: error.message || "An unexpected error occurred",

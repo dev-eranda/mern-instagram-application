@@ -3,7 +3,8 @@ import { jwtDecode } from "jwt-decode";
 
 // Create Axios instance with base URL
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.8.124:5000",
+  // baseURL: "http://192.168.8.124:5000",
+  baseURL: "http://16.171.34.240/api",
 });
 
 // Check if the token is expired
