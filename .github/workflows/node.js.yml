@@ -27,11 +27,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
     
     - name: Install dependencies
-      run: npm ci
+      run: yarn install --frozen-lockfile
       working-directory: server
 
     - name: Build the project
-      run: npm run build --if-present
+      run: yarn build
       working-directory: server
 
     - name: Set up environment variables
