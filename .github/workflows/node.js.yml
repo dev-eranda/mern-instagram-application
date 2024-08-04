@@ -33,7 +33,7 @@ jobs:
     - name: Set up environment variables
       run: |
         touch .env
-        echo "${{ secrets.MONGO_DB }}" > .env
+        echo "${{ secrets.MONGOURI }}" > .env
       working-directory: server
 
 
