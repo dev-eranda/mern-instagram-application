@@ -86,7 +86,7 @@ axiosInstance.interceptors.request.use(
     config.headers["Content-Type"] = "application/json";
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // axiosInstance.interceptors.response.use(

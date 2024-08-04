@@ -2,13 +2,23 @@ import React from "react";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./registrationSchema";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import axios from "../../api/axios";
 import "./Register.css";
 
 type FormFields = z.infer<typeof schema>;
+
+interface ErrorResponse {
+  error: string;
+}
+
+function isAxiosError(error: any): error is AxiosError {
+  return error.isAxiosError === true;
+}
 
 const Register: React.FC = () => {
   const {
@@ -25,22 +35,18 @@ const Register: React.FC = () => {
     const { firstName, lastName, email, password } = data;
     const name = firstName + " " + lastName;
     try {
-      const response = await fetch("/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const result = await response.json();
-      if (result.error) {
-        throw new Error(result.error);
-      } else {
-        navigate("/login");
-      }
+      const controller = new AbortController();
+      await axios.post("/signup", { name, email, password }, { signal: controller.signal });
+      navigate("/login");
     } catch (error) {
-      if (error instanceof Error) {
+      if (isAxiosError(error)) {
+        const serverError = error.response?.data as ErrorResponse;
+        const errorMessage = serverError?.error || "An unexpected error occurred";
+        setError("root", {
+          type: "manual",
+          message: errorMessage,
+        });
+      } else if (error instanceof Error) {
         setError("root", {
           type: "manual",
           message: error.message || "An unexpected error occurred",

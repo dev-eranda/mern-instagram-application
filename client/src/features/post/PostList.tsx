@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
 import { setPosts } from "../../slices/postSlice";
-import { RootState, AppDispatch } from "../../store";
+import { RootState } from "../../store";
 import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";

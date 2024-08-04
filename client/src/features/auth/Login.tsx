@@ -7,8 +7,8 @@ import { schema } from "./loginSchema";
 import { z } from "zod";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AxiosError } from "axios";
-import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
 import "./Login.css";
 
 type FormFields = z.infer<typeof schema>;
@@ -39,8 +39,13 @@ const Login: React.FC = () => {
     const { email, password } = data;
 
     try {
-      const response = await axios.post("/signin", { email, password });
-      const result = await response.data;
+      const controller = new AbortController();
+      const response = await axios.post(
+        "/signin",
+        { email, password },
+        { signal: controller.signal },
+      );
+      const result = response.data;
       setAuth({
         accessToken: result.accessToken,
         refreshToken: result.refreshToken,
