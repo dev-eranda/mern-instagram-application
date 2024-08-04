@@ -6,6 +6,28 @@ const requireLogin = require('../middleware/requireLogin')
 const joi = require('joi')
 
 
+router.get('/api/test', requireLogin, async (req, res) => {
+    try {
+        return res.status(200).json("api/test")
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
+})
+
+router.get('/test', requireLogin, async (req, res) => {
+    try {
+       
+        return res.status(200).json("test")
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).send("500 Internal server error")
+    }
+})
+
+
 /*=====================================================================================
                                     GET ALL POST
 =====================================================================================*/
