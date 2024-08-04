@@ -32,8 +32,7 @@ jobs:
 
     - name: Set up environment variables
       run: |
-        touch .env
-        echo "${{ secrets.MONGOURI }}" > .env
+        echo "MONGOURI=${{ secrets.MONGOURI }}" > .env
       working-directory: server
 
 
