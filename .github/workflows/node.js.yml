@@ -33,15 +33,7 @@ jobs:
     - name: Set up environment variables
       run: |
         echo "MONGOURI=${{ secrets.MONGOURI }}" > .env
+        echo "JWT_SECRET: ${{ secrets.JWT_SECRET }}" >> .env
+        echo "JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}" >> .env
       working-directory: server
 
-
-    # - name: Use MongoDB URI
-    #   run: echo "MongoDB URI: ${{ secrets.MONGOURI }}"
-    
-    # - name: Use JWT Secret
-    #   run: echo "JWT Secret: ${{ secrets.JWT_SECRET }}"
-
-    # - name: Use JWT Refresh Secret
-    #   run: echo "JWT Refresh Secret: ${{ secrets.JWT_REFRESH_SECRET }}"
-      
