@@ -9,8 +9,6 @@ const PORT = 5000
 
 const MONGOURI = process.env.MONGOURI;
 
-console.log("mongo:" , MONGOURI)
-
 mongoose.set("strictQuery", false);
 mongoose.connect(MONGOURI)
 mongoose.connection.on('connected', () => {
