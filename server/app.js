@@ -1,10 +1,13 @@
+require('dotenv').config();
+
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
 const app = express()
 const PORT = 5000
-const {MONGOURI} = require('./keys')
+
+const MONGOURI = process.env.MONGOURI;
 
 mongoose.set("strictQuery", false);
 mongoose.connect(MONGOURI)
@@ -29,5 +32,5 @@ app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 
 app.listen(PORT, ()=>{
-    console.log("Server is runnig on", `http://192.168.8.124:${PORT}`)
+    console.log("Server is runnig on", `http://localhost:${PORT}`)
 })
