@@ -35,7 +35,7 @@ const signupSchema = joi.object({
   password: joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/api/signup", async (req, res) => {
   const { error, value } = signupSchema.validate(req.body);
   if (error) {
     return res.status(422).json({ error: error.details[0].message });
@@ -72,7 +72,7 @@ const signinSchema = joi.object({
 });
 
 
-router.post("/signin", async (req, res) => {
+router.post("/api/signin", async (req, res) => {
   const { error, value } = signinSchema.validate(req.body);
   if (error) {
     return res.status(422).json({ error: error.details[0].message });
@@ -115,7 +115,7 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.post("/refresh", async (req, res) => {
+router.post("/api/refresh", async (req, res) => {
   //take the refresh token from user
   const refreshToken = req.body.token;
 
@@ -146,12 +146,12 @@ router.post("/refresh", async (req, res) => {
   });
 });
 
-router.get("/user", requireLogin, async (req, res) => {
+router.get("/api/user", requireLogin, async (req, res) => {
   const currentUser = req.user
   res.status(200).json(currentUser)
 });
 
-router.post("/logout", requireLogin, async (req, res) => {
+router.post("/api/logout", requireLogin, async (req, res) => {
   const refreshToken = req.body.token
   refreshTokens = refreshTokens.filter(token => token !== refreshToken)
   res.status(200).json("You logged out successfully")
