@@ -28,14 +28,10 @@ jobs:
     
     - name: Install dependencies
       run: yarn 
-      working-directory: ./server
-
-    - name: Build the project
-      run: yarn build
-      working-directory: ./server
+      working-directory: server
 
     - name: Set up environment variables
       run: |
         touch .env
         echo "${{ secrets.API_SECRET }}" > .env
-      working-directory: ./server
+      working-directory: server
