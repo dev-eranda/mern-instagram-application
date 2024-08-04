@@ -33,7 +33,6 @@ jobs:
     - name: Set up environment variables
       run: |
         echo "MONGOURI=${{ secrets.MONGOURI }}" > .env
-        echo "JWT_SECRET: ${{ secrets.JWT_SECRET }}" >> .env
-        echo "JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}" >> .env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+        echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
       working-directory: server
-
