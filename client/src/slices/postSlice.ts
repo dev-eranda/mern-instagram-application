@@ -175,8 +175,15 @@ const postSlice = createSlice({
       const { post } = action.payload;
       state.post = post;
     },
+    setPostActions: (state, action) => {
+      if (state.post) {
+        state.post = state.post.map((post) =>
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
+        );
+      }
+    },
   },
 });
 
-export const { setPostData } = postSlice.actions;
+export const { setPostData, setPostActions } = postSlice.actions;
 export default postSlice.reducer;

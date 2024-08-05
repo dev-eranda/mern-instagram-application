@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Post } from "../../../types/post";
-import { useDispatch } from "react-redux";
-// import { commentAsync, likeAsync, unlikeAsync } from "../../../slices/postSlice";
-import { AppDispatch } from "../../../store";
+// import { useDispatch } from "react-redux";
+// import { AppDispatch } from "../../../store";
+// import { setPostActions } from "../../../slices/postSlice";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import "./Card.css";
 
 type CardProps = {
@@ -10,41 +12,64 @@ type CardProps = {
 };
 
 const PostCard: React.FC<CardProps> = ({ post }) => {
-  const dispatch = useDispatch<AppDispatch>();
-
   const [likes, setLikes] = useState(post.likes || []);
   const [comments, setComments] = useState(post.comments || []);
   const [text, setText] = useState("");
-  const userId = localStorage.getItem("_id");
+
+  const { user } = useAuth();
+  // const dispatch = useDispatch<AppDispatch>();
+  const axiosPrivate = useAxiosPrivate();
+  const controller = new AbortController();
 
   const handleLike = async (postId: string) => {
     try {
-      setLikes([...likes, userId ?? ""]);
-      // await dispatch(likeAsync({ postId }));
+      setLikes([...likes, user?._id ?? ""]);
+      const response = await axiosPrivate.put(
+        "/post/like",
+        { postId },
+        {
+          signal: controller.signal,
+        }
+      );
+
+      // await dispatch(setPostActions(response.data.post));
     } catch (error) {
       console.log(error);
-      setLikes(likes.filter((id) => id !== userId));
+      setLikes(likes.filter((id) => id !== user?._id));
     }
   };
 
   const handleUnlike = async (postId: string) => {
     try {
-      setLikes(likes.filter((id) => id !== userId));
-      // await dispatch(unlikeAsync({ postId }));
+      setLikes(likes.filter((id) => id !== user?._id));
+      const response = await axiosPrivate.put(
+        "/post/unlike",
+        { postId },
+        {
+          signal: controller.signal,
+        }
+      );
+
+      // await dispatch(setPostActions(response.data.post));
     } catch (error) {
       console.log(error);
-      setLikes([...likes, userId ?? ""]);
+      setLikes([...likes, user?._id ?? ""]);
     }
   };
 
   const handleComment = async (postId: string, text: string) => {
     try {
-      // const resultAction = await dispatch(commentAsync({ postId, text }));
-      // if (commentAsync.fulfilled.match(resultAction)) {
-      //   const post = resultAction.payload;
-      //   setComments(post.comments || []);
-      //   setText("");
-      // }
+      const response = await axiosPrivate.put(
+        "/post/comment",
+        { postId, text },
+        {
+          signal: controller.signal,
+        }
+      );
+
+      // await dispatch(setPostActions(response.data.post));
+      setComments(response.data.post.comments || []);
+      setText("");
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +85,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         <img alt="photo" src={post.photo || "./logo512.png"} />
       </div>
       <div className="action-container">
-        {likes.includes(userId ?? "") ? (
+        {likes.includes(user?._id ?? "") ? (
           <img
             alt="save"
             src="./heart-fill.svg"
