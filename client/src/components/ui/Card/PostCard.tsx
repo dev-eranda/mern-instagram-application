@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Post } from "../../../types/post";
 import { useDispatch } from "react-redux";
-import { commentAsync, likeAsync, unlikeAsync } from "../../../slices/postSlice";
+// import { commentAsync, likeAsync, unlikeAsync } from "../../../slices/postSlice";
 import { AppDispatch } from "../../../store";
 import "./Card.css";
 
@@ -20,7 +20,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const handleLike = async (postId: string) => {
     try {
       setLikes([...likes, userId ?? ""]);
-      await dispatch(likeAsync({ postId }));
+      // await dispatch(likeAsync({ postId }));
     } catch (error) {
       console.log(error);
       setLikes(likes.filter((id) => id !== userId));
@@ -30,7 +30,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const handleUnlike = async (postId: string) => {
     try {
       setLikes(likes.filter((id) => id !== userId));
-      await dispatch(unlikeAsync({ postId }));
+      // await dispatch(unlikeAsync({ postId }));
     } catch (error) {
       console.log(error);
       setLikes([...likes, userId ?? ""]);
@@ -39,12 +39,12 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
 
   const handleComment = async (postId: string, text: string) => {
     try {
-      const resultAction = await dispatch(commentAsync({ postId, text }));
-      if (commentAsync.fulfilled.match(resultAction)) {
-        const post = resultAction.payload;
-        setComments(post.comments || []);
-        setText("");
-      }
+      // const resultAction = await dispatch(commentAsync({ postId, text }));
+      // if (commentAsync.fulfilled.match(resultAction)) {
+      //   const post = resultAction.payload;
+      //   setComments(post.comments || []);
+      //   setText("");
+      // }
     } catch (error) {
       console.log(error);
     }

@@ -6,7 +6,7 @@ import { Button } from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "../../types/post";
 import { Schema } from "./PostSchema";
-import { createPostAsync } from "../../slices/postSlice";
+// import { createPostAsync } from "../../slices/postSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import z from "zod";
@@ -40,7 +40,7 @@ const PostForm = ({ post }: postFormProps) => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       const { title, description, file } = data;
-      await dispatch(createPostAsync({ title, description, file })).unwrap();
+      // await dispatch(createPostAsync({ title, description, file })).unwrap();
       reset();
       setImage(null);
       alert("success");

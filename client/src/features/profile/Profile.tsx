@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootTypes } from "../../types";
 import { AppDispatch } from "../../store";
-import { getMyPostsAsync } from "../../slices/postSlice";
+// import { getMyPostsAsync } from "../../slices/postSlice";
 import Layout from "../../components/Layout/Layout";
 import "./Profile.css";
 
@@ -13,7 +13,7 @@ const Profile = () => {
 
   const fetchPosts = useCallback(async () => {
     try {
-      dispatch(getMyPostsAsync());
+      // dispatch(getMyPostsAsync());
     } catch (error) {
       console.log(error);
     }
