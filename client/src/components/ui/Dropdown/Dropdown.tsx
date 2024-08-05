@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootTypes } from "../../../types";
-import { AppDispatch } from "../../../store";
-// import { getUserAsync } from "../../../slices/authSlice";
-// import useAuth from "../../../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import "./Dropdown.css";
 
 interface dropdownProps {
@@ -12,19 +9,29 @@ interface dropdownProps {
 }
 
 const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
-  const { user } = useSelector((state: RootTypes) => state.auth);
-  const dispatch = useDispatch<AppDispatch>();
+  const { user, refreshToken, logout } = useAuth();
+  const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+  const controller = new AbortController();
 
-  // const { logout } = useAuth();
-  const handleLogout = () => {
-    // logout();
-  };
+  const handleLogout = async () => {
+    try {
+      const response = await axiosPrivate.post(
+        "/logout",
+        { refreshToken },
+        {
+          signal: controller.signal,
+        }
+      );
 
-  useEffect(() => {
-    if (isOpen) {
-      // dispatch(getUserAsync());
+      logout();
+      if (response.status === 200) {
+        navigate("/login", { replace: true });
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }, [isOpen]);
+  };
 
   return (
     <>

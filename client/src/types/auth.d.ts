@@ -8,5 +8,5 @@ export interface User {
 export interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
-  user: User;
+  user: User | null;
 }

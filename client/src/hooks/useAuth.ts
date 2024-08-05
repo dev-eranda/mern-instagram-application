@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setAuthData } from "../slices/authSlice";
+import { setAuthData, clearAuthData } from "../slices/authSlice";
 import { RootTypes } from "../types";
 import { AppDispatch } from "../store";
 import { User } from "../types/auth";
@@ -13,7 +13,7 @@ const useAuth = () => {
       accessToken: string;
       refreshToken: string;
       user: User;
-    }>,
+    }>
   ) => {
     const newAccessToken = data.accessToken ?? accessToken ?? "";
     const newRefreshToken = data.refreshToken ?? refreshToken ?? "";
@@ -24,8 +24,12 @@ const useAuth = () => {
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
         user: newUser,
-      }),
+      })
     );
+  };
+
+  const logout = () => {
+    dispatch(clearAuthData());
   };
 
   return {
@@ -33,6 +37,7 @@ const useAuth = () => {
     accessToken,
     refreshToken,
     setAuth: handleAuth,
+    logout,
   };
 };
 

@@ -26,7 +26,7 @@ export const likeAsync = createAsyncThunk(
     });
 
     return await response.data.post;
-  },
+  }
 );
 
 export const unlikeAsync = createAsyncThunk(
@@ -38,7 +38,7 @@ export const unlikeAsync = createAsyncThunk(
     });
 
     return await response.data.post;
-  },
+  }
 );
 
 export const commentAsync = createAsyncThunk(
@@ -51,7 +51,7 @@ export const commentAsync = createAsyncThunk(
     });
 
     return response.data.post;
-  },
+  }
 );
 
 export const getMyPostsAsync = createAsyncThunk("post/getMyPostsAsync", async () => {
@@ -75,7 +75,7 @@ export const createPostAsync = createAsyncThunk(
   "post/createPostAsync",
   async (
     { title, description, file }: { title: string; description: string; file: File[] },
-    { dispatch },
+    { dispatch }
   ) => {
     const imageUrl = await dispatch(storeImageAync(file[0])).unwrap();
     if (imageUrl) {
@@ -87,7 +87,7 @@ export const createPostAsync = createAsyncThunk(
       });
       return response.data;
     }
-  },
+  }
 );
 
 const postSlice = createSlice({
@@ -97,13 +97,6 @@ const postSlice = createSlice({
     setPosts: (state, action) => {
       state.post = action.payload.post;
     },
-
-    // setAuthData: (state, action: PayloadAction<SetAuthDataPayload>) => {
-    //   const { accessToken, refreshToken, user } = action.payload;
-    //   state.accessToken = accessToken;
-    //   state.refreshToken = refreshToken;
-    //   state.user = user;
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -133,7 +126,7 @@ const postSlice = createSlice({
       })
       .addCase(likeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
       })
 
@@ -142,7 +135,7 @@ const postSlice = createSlice({
       })
       .addCase(unlikeAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
       })
 
@@ -151,7 +144,7 @@ const postSlice = createSlice({
       })
       .addCase(commentAsync.fulfilled, (state, action: PayloadAction<Post>) => {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post,
+          post._id === action.payload._id ? { ...post, ...action.payload } : post
         );
       })
 
