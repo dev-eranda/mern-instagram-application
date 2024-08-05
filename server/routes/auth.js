@@ -22,7 +22,7 @@ const generateRefreshToken = (user) => {
   return jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
     JWT_REFRESH_SECRET,
-    { expiresIn: "1d" }
+    { expiresIn: "15s" }
   );
 };
 
