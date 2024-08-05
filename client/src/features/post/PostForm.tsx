@@ -6,10 +6,9 @@ import { Button } from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "../../types/post";
 import { Schema } from "./PostSchema";
-// import { createPostAsync } from "../../slices/postSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store";
 import z from "zod";
+import axios from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "./PostForm.css";
 
 type FormFields = z.infer<typeof Schema>;
@@ -21,7 +20,6 @@ const PostForm = ({ post }: postFormProps) => {
   const {
     register,
     handleSubmit,
-    setError,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
@@ -35,21 +33,36 @@ const PostForm = ({ post }: postFormProps) => {
     resolver: zodResolver(Schema),
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-  const dispatch = useDispatch<AppDispatch>();
+  const axiosPrivate = useAxiosPrivate();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    const { title, description, file } = data;
+
     try {
-      const { title, description, file } = data;
-      // await dispatch(createPostAsync({ title, description, file })).unwrap();
-      reset();
-      setImage(null);
-      alert("success");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError("root", {
-          message: error.message || "An unexpected error occurred",
+      const data = new FormData();
+      data.append("file", file[0]);
+      data.append("upload_preset", "insta-clone");
+      data.append("cloud_name", "dgbgvecx3");
+
+      const imgURI = await axios.post(
+        "https://api.cloudinary.com/v1_1/dgbgvecx3/image/upload",
+        data
+      );
+
+      if (imgURI.data.url) {
+        const response = await axiosPrivate.post("/post", {
+          title,
+          body: description,
+          image_url: imgURI.data.url,
         });
+
+        console.log(response.data);
+        reset();
+        setImage(null);
+        alert("success");
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 
