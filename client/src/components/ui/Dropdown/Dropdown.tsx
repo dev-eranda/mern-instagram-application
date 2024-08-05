@@ -25,9 +25,10 @@ const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
       );
 
       logout();
-      if (response.status === 200) {
-        navigate("/login", { replace: true });
-      }
+
+      // if (response.status === 200) {
+      //   navigate("/login", { replace: true });
+      // }
     } catch (error) {
       console.log(error);
     }

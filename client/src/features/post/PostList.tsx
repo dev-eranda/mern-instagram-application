@@ -3,33 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { PostCard } from "../../components/ui/Card";
 import { setPostData } from "../../slices/postSlice";
 import { RootTypes } from "../../types";
-import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "./PostList.css";
 
 const Post = () => {
+  const [loading, setLoading] = useState(false);
   const { post } = useSelector((state: RootTypes) => state.post);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     let isMounted = true;
-    const controller = new AbortController();
     setLoading(true);
+    const controller = new AbortController();
 
     const getPost = async () => {
       try {
         const response = await axiosPrivate.get("/post", {
           signal: controller.signal,
         });
+
         isMounted && dispatch(setPostData(response.data));
       } catch (error) {
         console.error(error);
-        navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
       }

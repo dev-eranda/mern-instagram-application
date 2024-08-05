@@ -1,27 +1,46 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootTypes } from "../../types";
 import { AppDispatch } from "../../store";
-// import { getMyPostsAsync } from "../../slices/postSlice";
+import { setPostData } from "../../slices/postSlice";
+import useAuth from "../../hooks/useAuth";
 import Layout from "../../components/Layout/Layout";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "./Profile.css";
 
 const Profile = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootTypes) => state.auth);
+  const [loading, setLoading] = useState(false);
   const { post } = useSelector((state: RootTypes) => state.post);
-
-  const fetchPosts = useCallback(async () => {
-    try {
-      // dispatch(getMyPostsAsync());
-    } catch (error) {
-      console.log(error);
-    }
-  }, [dispatch]);
+  const { user } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    let isMounted = true;
+    setLoading(true);
+    const controller = new AbortController();
+
+    const fetchPost = async () => {
+      try {
+        const response = await axiosPrivate("/post/my", {
+          signal: controller.signal,
+        });
+
+        isMounted && dispatch(setPostData(response.data));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [dispatch]);
 
   return (
     <Layout>
@@ -38,7 +57,9 @@ const Profile = () => {
           </div>
         </div>
         <div className="post-wrapper">
-          {post && post.length > 0 ? (
+          {loading ? (
+            <p>Loadng...</p>
+          ) : post && post.length > 0 ? (
             post.map((post) => (
               <div key={post._id} className="post-item">
                 <img alt="post" src={post.photo} />
