@@ -26,7 +26,7 @@ const Post = () => {
 
         isMounted && dispatch(setPostData(response.data));
       } catch (error) {
-        console.error(error);
+        console.log(error);
       } finally {
         setLoading(false);
       }

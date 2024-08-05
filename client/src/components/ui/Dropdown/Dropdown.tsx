@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import "./Dropdown.css";
@@ -10,13 +10,12 @@ interface dropdownProps {
 
 const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
   const { user, refreshToken, logout } = useAuth();
-  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const controller = new AbortController();
 
   const handleLogout = async () => {
     try {
-      const response = await axiosPrivate.post(
+      await axiosPrivate.post(
         "/logout",
         { refreshToken },
         {
@@ -25,10 +24,6 @@ const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
       );
 
       logout();
-
-      // if (response.status === 200) {
-      //   navigate("/login", { replace: true });
-      // }
     } catch (error) {
       console.log(error);
     }
