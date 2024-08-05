@@ -41,7 +41,7 @@ const Post = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [navigate, location, dispatch]);
+  }, [dispatch]);
 
   return (
     <Layout>

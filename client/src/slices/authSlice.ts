@@ -29,9 +29,9 @@ const authSlice = createSlice({
       state.user = user;
     },
     clearAuthData: (state) => {
-      state.user = null;
-      state.accessToken = "";
-      state.refreshToken = "";
+      state.user = initialState.user;
+      state.accessToken = null;
+      state.refreshToken = null;
     },
   },
 });
