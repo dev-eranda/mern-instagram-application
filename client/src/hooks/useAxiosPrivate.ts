@@ -34,6 +34,7 @@ const useAxiosPrivate = () => {
             return axiosPrivate(prevRequest);
           }
         } catch (err) {
+          console.log(err);
           navigate("/login", { state: { from: location }, replace: true });
         }
         return Promise.reject(error);

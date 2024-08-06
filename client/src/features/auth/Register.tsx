@@ -16,8 +16,8 @@ interface ErrorResponse {
   error: string;
 }
 
-function isAxiosError(error: any): error is AxiosError {
-  return error.isAxiosError === true;
+function isAxiosError(error: unknown): error is AxiosError {
+  return (error as AxiosError).isAxiosError === true;
 }
 
 const Register: React.FC = () => {

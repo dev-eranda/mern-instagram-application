@@ -24,7 +24,9 @@ const Post = () => {
           signal: controller.signal,
         });
 
-        isMounted && dispatch(setPostData(response.data));
+        if (isMounted) {
+          dispatch(setPostData(response.data));
+        }
       } catch (error) {
         console.log(error);
       } finally {

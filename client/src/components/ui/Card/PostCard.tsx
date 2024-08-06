@@ -24,7 +24,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const handleLike = async (postId: string) => {
     try {
       setLikes([...likes, user?._id ?? ""]);
-      const response = await axiosPrivate.put(
+      await axiosPrivate.put(
         "/post/like",
         { postId },
         {
@@ -42,7 +42,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
   const handleUnlike = async (postId: string) => {
     try {
       setLikes(likes.filter((id) => id !== user?._id));
-      const response = await axiosPrivate.put(
+      await axiosPrivate.put(
         "/post/unlike",
         { postId },
         {

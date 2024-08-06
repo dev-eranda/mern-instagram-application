@@ -18,11 +18,17 @@ const PersistLogin = () => {
       } catch (err) {
         console.log(err);
       } finally {
-        isMounted && setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
-    !accessToken ? verifyRefreshToken() : setIsLoading(false);
+    if (accessToken) {
+      verifyRefreshToken();
+    } else {
+      setIsLoading(false);
+    }
 
     return () => {
       isMounted = false;

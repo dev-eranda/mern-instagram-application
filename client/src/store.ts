@@ -1,8 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./slices";
 
-const devTools =
-  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__();
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION__?: () => undefined;
+  }
+}
+
+const devTools = window.__REDUX_DEVTOOLS_EXTENSION__
+  ? window.__REDUX_DEVTOOLS_EXTENSION__()
+  : undefined;
 
 const store = configureStore({
   reducer: rootReducer,

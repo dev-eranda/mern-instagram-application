@@ -9,7 +9,7 @@ const NotFound = () => {
     <div>
       <h1>404 Not Found</h1>
       <br />
-      <p>Sorry, We couldn't find that page.</p>
+      <p>Sorry, We couldn&apos;t find that page.</p>
       <div>
         <button onClick={goBack}>Back</button>
       </div>

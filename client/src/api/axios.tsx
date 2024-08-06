@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 // const BASE_URL = "http://192.168.8.124:5000";
 const BASE_URL = "http://16.171.34.240/api";
 

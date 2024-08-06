@@ -9,7 +9,7 @@ const Unauthorized = () => {
     <div>
       <h1>Unauthorized</h1>
       <br />
-      <p>You don't have access to the request page.</p>
+      <p>You don&apos;t have access to the request page.</p>
       <div>
         <button onClick={goBack}>Back</button>
       </div>
