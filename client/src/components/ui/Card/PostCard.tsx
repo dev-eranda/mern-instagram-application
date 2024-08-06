@@ -29,7 +29,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         { postId },
         {
           signal: controller.signal,
-        }
+        },
       );
 
       // await dispatch(setPostActions(response.data.post));
@@ -47,7 +47,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         { postId },
         {
           signal: controller.signal,
-        }
+        },
       );
 
       // await dispatch(setPostActions(response.data.post));
@@ -64,7 +64,7 @@ const PostCard: React.FC<CardProps> = ({ post }) => {
         { postId, text },
         {
           signal: controller.signal,
-        }
+        },
       );
 
       // await dispatch(setPostActions(response.data.post));

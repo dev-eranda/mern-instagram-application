@@ -13,7 +13,7 @@ const useRefreshToken = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
 
     // console.log(accessToken);

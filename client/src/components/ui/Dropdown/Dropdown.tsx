@@ -20,7 +20,7 @@ const Dropdown: React.FC<dropdownProps> = ({ isOpen }) => {
         { refreshToken },
         {
           signal: controller.signal,
-        }
+        },
       );
 
       logout();

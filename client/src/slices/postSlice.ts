@@ -16,7 +16,7 @@ const postSlice = createSlice({
     setPostActions: (state, action) => {
       if (state.post) {
         state.post = state.post.map((post) =>
-          post._id === action.payload._id ? { ...post, ...action.payload } : post
+          post._id === action.payload._id ? { ...post, ...action.payload } : post,
         );
       }
     },

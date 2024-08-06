@@ -43,7 +43,7 @@ const Login: React.FC = () => {
       const response = await axios.post(
         "/signin",
         { email, password },
-        { signal: controller.signal }
+        { signal: controller.signal },
       );
       const result = response.data;
       setAuth({

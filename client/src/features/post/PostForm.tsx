@@ -46,7 +46,7 @@ const PostForm = ({ post }: postFormProps) => {
 
       const imgURI = await axios.post(
         "https://api.cloudinary.com/v1_1/dgbgvecx3/image/upload",
-        data
+        data,
       );
 
       if (imgURI.data.url) {

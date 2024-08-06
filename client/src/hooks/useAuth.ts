@@ -13,7 +13,7 @@ const useAuth = () => {
       accessToken: string;
       refreshToken: string;
       user: User;
-    }>
+    }>,
   ) => {
     const newAccessToken = data.accessToken ?? accessToken ?? "";
     const newRefreshToken = data.refreshToken ?? refreshToken ?? "";
@@ -24,7 +24,7 @@ const useAuth = () => {
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
         user: newUser,
-      })
+      }),
     );
   };
 
