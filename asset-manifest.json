@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/index.html/static/css/main.56dd842c.css",
-    "main.js": "/index.html/static/js/main.a3ede321.js",
-    "static/js/453.419a5d54.chunk.js": "/index.html/static/js/453.419a5d54.chunk.js",
-    "static/media/login_.jpg": "/index.html/static/media/login_.069bb513e60e8383a961.jpg",
-    "index.html": "/index.html/index.html",
-    "main.56dd842c.css.map": "/index.html/static/css/main.56dd842c.css.map",
-    "main.a3ede321.js.map": "/index.html/static/js/main.a3ede321.js.map",
-    "453.419a5d54.chunk.js.map": "/index.html/static/js/453.419a5d54.chunk.js.map"
+    "main.css": "/mern-crud-authentication/client/build/static/css/main.01495159.css",
+    "main.js": "/mern-crud-authentication/client/build/static/js/main.3142a5d1.js",
+    "static/js/453.419a5d54.chunk.js": "/mern-crud-authentication/client/build/static/js/453.419a5d54.chunk.js",
+    "static/media/login_.jpg": "/mern-crud-authentication/client/build/static/media/login_.069bb513e60e8383a961.jpg",
+    "index.html": "/mern-crud-authentication/client/build/index.html",
+    "main.01495159.css.map": "/mern-crud-authentication/client/build/static/css/main.01495159.css.map",
+    "main.3142a5d1.js.map": "/mern-crud-authentication/client/build/static/js/main.3142a5d1.js.map",
+    "453.419a5d54.chunk.js.map": "/mern-crud-authentication/client/build/static/js/453.419a5d54.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.56dd842c.css",
-    "static/js/main.a3ede321.js"
+    "static/css/main.01495159.css",
+    "static/js/main.3142a5d1.js"
   ]
 }
