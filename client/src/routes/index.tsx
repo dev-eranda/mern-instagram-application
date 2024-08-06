@@ -8,9 +8,10 @@ import PostForm from "../features/post/PostForm";
 import Profile from "../features/profile/Profile";
 import Unauthorized from "../components/Unauthorized";
 import NotFound from "../components/NotFound";
-// import Layout from "../components/Layout";
 
+import Layout from "../components/Layout";
 import RequireAuth from "../components/RequireAuth";
+import PersistLogin from "../components/PersistLogin";
 
 const ROLES = {
   User: 2001,
@@ -20,31 +21,36 @@ const ROLES = {
 
 const AppRoutes: React.FC = () => (
   <Routes>
-    {/* <Route path="/" element={<Layout />} /> */}
+    <Route path="/" element={<Layout />}>
+      {/* PUBLIC ROUTES */}
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+      <Route path="unauthorized" element={<Unauthorized />} />
 
-    <Route path="/login" element={<Login />} />
-    <Route path="/register" element={<Register />} />
-    <Route path="/unauthorized" element={<Unauthorized />} />
+      {/* PROTECTED ROUTES */}
+      <Route element={<PersistLogin />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+          <Route path="/" element={<PostList />} />
+          <Route path="post" element={<PostForm />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
 
-    <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-      <Route path="/" element={<PostList />} />
-      <Route path="/post" element={<PostForm />} />
-      <Route path="/profile" element={<Profile />} />
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route path="admin" element={<PostList />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+          <Route path="editor" element={<PostList />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}>
+          <Route path="lounge" element={<PostList />} />
+        </Route>
+      </Route>
+
+      {/* MISSING ROUTE */}
+      <Route path="*" element={<NotFound />} />
     </Route>
-
-    <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-      <Route path="/admin" element={<PostList />} />
-    </Route>
-
-    <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-      <Route path="/editor" element={<PostList />} />
-    </Route>
-
-    <Route element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}>
-      <Route path="/lounge" element={<PostList />} />
-    </Route>
-
-    <Route path="*" element={<NotFound />} />
   </Routes>
 );
 

@@ -1,7 +1,7 @@
 import axios from "../api/axios";
 import useAuth from "./useAuth";
 
-const useRefreshToke = () => {
+const useRefreshToken = () => {
   const { accessToken, refreshToken, setAuth } = useAuth();
 
   const refresh = async () => {
@@ -13,7 +13,7 @@ const useRefreshToke = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      },
+      }
     );
 
     // console.log(accessToken);
@@ -27,4 +27,4 @@ const useRefreshToke = () => {
   return refresh;
 };
 
-export default useRefreshToke;
+export default useRefreshToken;
