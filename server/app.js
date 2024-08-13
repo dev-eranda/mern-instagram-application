@@ -22,7 +22,7 @@ require('./models/user');
 require('./models/post');
 
 const corsOptions = {
-  origin: ['http://localhost:3000, https://social-app-iota-livid.vercel.app'],
+  origin: ['http://localhost:3000', 'https://social-app-iota-livid.vercel.app'],
   credentials: true,
 };
 
