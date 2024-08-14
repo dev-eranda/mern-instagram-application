@@ -14,7 +14,7 @@ import "./Profile.css";
 const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const { post } = useSelector((state: RootTypes) => state.post);
   const { user } = useAuth();
   const axiosPrivate = useAxiosPrivate();
@@ -52,13 +52,13 @@ const Profile = () => {
   const showPopup = (postId: string) => {
     setIsPopupVisible(true);
     // console.log(postId);
-    // setSelectedPost("66b07af5f29b96d8d2eefe3b");
-    setSelectedPost(postId);
+    // setSelectedPostId("66b07af5f29b96d8d2eefe3b");
+    setSelectedPostId(postId);
   };
 
   const closePopup = () => {
     setIsPopupVisible(false);
-    setSelectedPost(null);
+    setSelectedPostId(null);
   };
 
   const controller = new AbortController();
@@ -66,23 +66,28 @@ const Profile = () => {
   const handleDelete = async () => {
     setLoading(true);
 
-    if (selectedPost) {
+    if (selectedPostId) {
       try {
-        const response = await axiosPrivate.delete(`/post/${selectedPost}`, {
+        await axiosPrivate.delete(`/post/${selectedPostId}`, {
           signal: controller.signal,
         });
 
-        console.log(response);
-        setIsPopupVisible(false);
-        setSelectedPost(null);
+        closePopup();
         alert("success");
+
+        const postData = {
+          post: post && post.filter((p) => p._id !== selectedPostId),
+        };
+
+        if (post) {
+          await dispatch(setPostData(postData));
+        }
       } catch (error) {
         console.error("Failed to delete post:", error);
         alert("Failed to delete post. Please try again.");
       } finally {
         setLoading(false);
-        setIsPopupVisible(false);
-        setSelectedPost(null);
+        closePopup();
       }
     }
   };
