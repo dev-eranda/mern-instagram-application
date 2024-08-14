@@ -14,4 +14,17 @@ const Button: React.FC<ButtonProps> = ({ disabled, children }) => {
   );
 };
 
+interface IconButtonProps extends ButtonProps {
+  icon: React.ReactNode;
+}
+
+const IconButton: React.FC<IconButtonProps> = ({ disabled, icon }) => {
+  return (
+    <button className="btn-icon" disabled={disabled}>
+      <span className="icon">{icon}</span>
+    </button>
+  );
+};
+
 export default Button;
+export { IconButton };

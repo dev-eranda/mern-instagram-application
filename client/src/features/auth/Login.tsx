@@ -43,7 +43,7 @@ const Login: React.FC = () => {
       const response = await axios.post(
         "/signin",
         { email, password },
-        { signal: controller.signal },
+        { signal: controller.signal }
       );
       const result = response.data;
       setAuth({
@@ -118,7 +118,9 @@ const Login: React.FC = () => {
                     Don&apos;t have an account ? Get your <a href="/register">Free account Now</a>
                   </p>
                 </div>
-                <div className="no-account">{/* <a href="#">Forgotten password?</a> */}</div>
+                <div className="no-account">
+                  <a href="#">Forgotten password?</a>
+                </div>
               </div>
             </div>
           </div>

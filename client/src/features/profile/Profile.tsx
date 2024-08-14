@@ -6,6 +6,8 @@ import { setPostData } from "../../slices/postSlice";
 import useAuth from "../../hooks/useAuth";
 import Layout from "../../components/Layout/Layout";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { IconButton } from "../../components/ui/Button/Button";
+import { FaTrash } from "react-icons/fa";
 import "./Profile.css";
 
 const Profile = () => {
@@ -64,7 +66,12 @@ const Profile = () => {
           ) : post && post.length > 0 ? (
             post.map((post) => (
               <div key={post._id} className="post-item">
-                <img alt="post" src={post.photo} />
+                <div className="post-action">
+                  <img alt="post" src={post.photo} />
+                  <div className="delete-btn">
+                    <IconButton disabled={false} icon={<FaTrash />} children={undefined} />
+                  </div>
+                </div>
                 <span className="post-title">{post?.title}</span>
               </div>
             ))
