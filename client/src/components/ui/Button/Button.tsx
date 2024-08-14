@@ -16,11 +16,12 @@ const Button: React.FC<ButtonProps> = ({ disabled, children }) => {
 
 interface IconButtonProps extends ButtonProps {
   icon: React.ReactNode;
+  onClick: () => void;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ disabled, icon }) => {
+const IconButton: React.FC<IconButtonProps> = ({ disabled, icon, onClick }) => {
   return (
-    <button className="btn-icon" disabled={disabled}>
+    <button className="btn-icon" disabled={disabled} onClick={onClick}>
       <span className="icon">{icon}</span>
     </button>
   );

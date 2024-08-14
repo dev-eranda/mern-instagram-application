@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootTypes } from "../../types";
 import { AppDispatch } from "../../store";
 import { setPostData } from "../../slices/postSlice";
+import { IconButton } from "../../components/ui/Button/Button";
+import { FaTrash } from "react-icons/fa";
+import { Popup } from "../../components/ui/Popup";
 import useAuth from "../../hooks/useAuth";
 import Layout from "../../components/Layout/Layout";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { IconButton } from "../../components/ui/Button/Button";
-import { FaTrash } from "react-icons/fa";
 import "./Profile.css";
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<string | null>(null);
   const { post } = useSelector((state: RootTypes) => state.post);
   const { user } = useAuth();
   const axiosPrivate = useAxiosPrivate();
@@ -46,6 +49,48 @@ const Profile = () => {
     };
   }, [dispatch]);
 
+  const showPopup = (postId: string) => {
+    setIsPopupVisible(true);
+    // console.log(postId);
+    // setSelectedPost("66b07af5f29b96d8d2eefe3b");
+    setSelectedPost(postId);
+  };
+
+  const closePopup = () => {
+    setIsPopupVisible(false);
+    setSelectedPost(null);
+  };
+
+  const controller = new AbortController();
+
+  const handleDelete = async () => {
+    setLoading(true);
+
+    if (selectedPost) {
+      try {
+        const response = await axiosPrivate.delete(`/post/${selectedPost}`, {
+          signal: controller.signal,
+        });
+
+        console.log(response);
+        setIsPopupVisible(false);
+        setSelectedPost(null);
+        alert("success");
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+        alert("Failed to delete post. Please try again.");
+      } finally {
+        setLoading(false);
+        setIsPopupVisible(false);
+        setSelectedPost(null);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => controller.abort();
+  }, []);
+
   return (
     <Layout>
       <div className="profile-container">
@@ -68,8 +113,13 @@ const Profile = () => {
               <div key={post._id} className="post-item">
                 <div className="post-action">
                   <img alt="post" src={post.photo} />
-                  <div className="delete-btn">
-                    <IconButton disabled={false} icon={<FaTrash />} children={undefined} />
+                  <div className="delete-icon-btn">
+                    <IconButton
+                      disabled={false}
+                      icon={<FaTrash />}
+                      onClick={() => showPopup(post._id)}
+                      children={undefined}
+                    />
                   </div>
                 </div>
                 <span className="post-title">{post?.title}</span>
@@ -80,6 +130,14 @@ const Profile = () => {
           )}
         </div>
       </div>
+      {isPopupVisible && (
+        <Popup
+          message="Are you sure?"
+          onClose={closePopup}
+          onClick={handleDelete}
+          disabled={loading}
+        />
+      )}
     </Layout>
   );
 };

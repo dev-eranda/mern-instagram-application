@@ -61,7 +61,7 @@
     position: relative;
   }
 
-  .post-item .delete-btn {
+  .post-item .delete-icon-btn {
     position: absolute;
     bottom: 10px;
     right: 10px;

@@ -46,17 +46,16 @@ const PostForm = ({ post }: postFormProps) => {
 
       const imgURI = await axios.post(
         "https://api.cloudinary.com/v1_1/dgbgvecx3/image/upload",
-        data,
+        data
       );
 
       if (imgURI.data.url) {
-        const response = await axiosPrivate.post("/post", {
+        await axiosPrivate.post("/post", {
           title,
           body: description,
           image_url: imgURI.data.url,
         });
 
-        console.log(response.data);
         reset();
         setImage(null);
         alert("success");
