@@ -25,11 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
-        run: yarn
-        working-directory: server
-
-      - name: Build
+      - name: Build & Deploy
         run: yarn run build
         working-directory: server
 
