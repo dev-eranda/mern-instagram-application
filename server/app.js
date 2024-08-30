@@ -46,3 +46,4 @@ if (isProduction === "production") {
 app.listen(PORT, () => {
   console.log("Server is runnig on", `http://localhost:${PORT}`);
 });
+
