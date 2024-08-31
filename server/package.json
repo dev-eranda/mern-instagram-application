@@ -4,8 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "build": "cd ../client && yarn run build"
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
